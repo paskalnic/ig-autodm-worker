@@ -5,7 +5,7 @@ workers_dev = true
 preview_urls = false
 
 [vars]
-AUTOMATION_ENABLED = "false"
+AUTOMATION_ENABLED = "true"
 AUTO_FINAL_AFTER_OPENING = "false"
 META_SENDS_PER_MINUTE = "10"
 

@@ -228,8 +228,8 @@ function followGateInstruction(buttonTitle: string, customText?: string | null):
   const normalizedCustom = customText?.trim();
   if (normalizedCustom) return normalizedCustom;
 
-  const title = buttonTitle.trim() || "tombol tadi";
-  return `Follow dulu akun ini, lalu tap ${title} lagi. Kalau tombolnya gak muncul, balas READY.`;
+  const title = buttonTitle.trim() || "le bouton précédent";
+  return `Abonne-toi d'abord à ce compte, puis appuie à nouveau sur ${title}. Si le bouton ne s'affiche pas, réponds PRÊT.`;
 }
 
 function followGateButtonTitle(campaign: { buttonTitle: string; followGateButtonTitle?: string | null }): string {

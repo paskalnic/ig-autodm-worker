@@ -10,7 +10,7 @@ const baseCampaign: Campaign = {
   keyword: "PROMPT",
   openingText: "Mau promptnya?",
   openingTextVariants: ["Mau promptnya?"],
-  buttonTitle: "KIRIM",
+  buttonTitle: "CONTINUER",
   buttonPayload: "campaign-1:confirm",
   dmSteps: [],
   deliveryText: "Final prompt",
@@ -1127,7 +1127,7 @@ describe("FlowRouter", () => {
         type: "message.text",
         eventId: "message:user-1:follow-again",
         igUserId: "user-1",
-        text: "KIRIM"
+        text: "CONTINUER"
       },
       "{}"
     );

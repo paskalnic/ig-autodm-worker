@@ -1247,7 +1247,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                       <label class="check"><input id="followGateEnabled" name="followGateEnabled" type="checkbox"> Exiger un abonnement avant le message final</label>
                       <span class="help">Kalau user belum follow saat tombol diklik, DM akan minta follow dulu dan menampilkan tombol retry. Balasan READY tetap jadi fallback.</span>
                       <span id="followGateEnabledError" class="field-error"></span>
-                      <label>Teks saat belum follow<textarea id="followGateText" name="followGateText" maxlength="640" placeholder="Follow dulu akun ini, lalu tap tombol ini lagi. Kalau tombolnya tidak muncul, balas READY."></textarea><span class="help">Facultatif. Kosong berarti pakai teks default otomatis sesuai nama tombol.</span><span id="followGateTextError" class="field-error"></span></label>
+                      <label>Teks saat belum follow<textarea id="followGateText" name="followGateText" maxlength="640" placeholder="Follow dulu akun ini, lalu tap tombol ini lagi. Kalau tombolnya tidak muncul, réponds PRÊT."></textarea><span class="help">Facultatif. Kosong berarti pakai teks default otomatis sesuai nama tombol.</span><span id="followGateTextError" class="field-error"></span></label>
                       <label>Tombol saat belum follow<input id="followGateButtonTitle" name="followGateButtonTitle" maxlength="20" placeholder="UDAH FOLLOW"><span class="help">Facultatif. Kosong berarti tombol retry memakai tombol Premier message privé.</span><span id="followGateButtonTitleError" class="field-error"></span></label>
                     </div>
                     <details class="template-panel">
@@ -2354,7 +2354,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
       function followGateInstruction(buttonTitle, customText) {
         if (customText?.trim()) return customText.trim();
         const title = buttonTitle.trim() || "tombol tadi";
-        return "Follow dulu akun ini, lalu tap " + title + " lagi. Kalau tombolnya gak muncul, balas READY.";
+        return "Follow dulu akun ini, lalu tap " + title + " lagi. Kalau tombolnya gak muncul, réponds PRÊT.";
       }
 
       function appendPreviewCard(thread, text, buttonTitle, textId, buttonId, isStep) {

@@ -10,6 +10,7 @@ async function sha256Hex(text: string): Promise<string> {
 }
 
 const PRIVATE_REPLY_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+const READY_FALLBACK_TEXTS = new Set(["ready", "pret", "prêt", "prete", "prête", "go"]);
 
 export class FlowRouter {
   constructor(
@@ -204,7 +205,8 @@ export class FlowRouter {
   private async handleReadyText(
     event: Extract<NormalizedEvent, { type: "message.text" }>
   ): Promise<boolean> {
-    if (event.text.trim().toLowerCase() !== "ready") return false;
+    const normalizedReadyText = event.text.trim().toLowerCase();
+    if (!READY_FALLBACK_TEXTS.has(normalizedReadyText)) return false;
 
     const state = await this.repo.findLatestContactState(event.igUserId);
     if (!state || state.state !== "follow_requested") return false;

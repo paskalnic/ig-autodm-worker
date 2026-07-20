@@ -1,0 +1,25 @@
+{
+  "id": "kisavan-eleve",
+  "name": "Ki'Savan — Familles / ÉLÈVE",
+  "mediaId": "REMPLACER-PAR-ID-DU-POST",
+  "keyword": "ELEVE",
+  "openingText": "Bonjour ! 👋 Tu cherches un professeur particulier en Guadeloupe ? Ki'Savan trouve le bon prof selon ta commune, tes matières, ton budget et ton profil d'apprentissage. Appuie sur le bouton pour recevoir le formulaire de mise en relation.",
+  "openingTextVariants": [
+    "Bonjour ! 👋 Tu cherches un professeur particulier en Guadeloupe ? Ki'Savan trouve le bon prof selon ta commune, tes matières, ton budget et ton profil d'apprentissage. Appuie sur le bouton pour recevoir le formulaire de mise en relation.",
+    "Salut ! Besoin d'un coup de pouce en maths, français ou pour le Bac ? 📚 Ki'Savan te trouve un prof près de chez toi. Clique sur le bouton ci-dessous.",
+    "Bonjour ! Du CP à la Terminale, Ki'Savan met en relation élèves et professeurs partout en Guadeloupe. Appuie sur le bouton pour démarrer."
+  ],
+  "buttonTitle": "TROUVER MON PROF",
+  "buttonPayload": "kisavan-eleve:confirm",
+  "dmSteps": [],
+  "deliveryText": "Voici le formulaire Ki'Savan 📚 : REMPLACER-PAR-LIEN — indique ta commune, tes matières, le format souhaité (présentiel/visio) et ton budget. Bon à savoir : avec l'Avance Immédiate URSSAF, 50% du coût des cours est déduit immédiatement (crédit d'impôt). On te propose un prof sous 48h !",
+  "commentReplyText": "Regarde tes DM, le formulaire t'attend 📩",
+  "commentReplyTextVariants": [
+    "Regarde tes DM, le formulaire t'attend 📩",
+    "C'est envoyé en message privé 😉",
+    "Va voir tes DM, on s'occupe de toi 📚"
+  ],
+  "openingFailureReplyText": "On n'a pas pu t'envoyer de message privé 😕 Vérifie tes demandes de messages (Autres) ou autorise les DM, puis commente à nouveau ELEVE.",
+  "followGateEnabled": false,
+  "enabled": false
+}

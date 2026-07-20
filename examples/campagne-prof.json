@@ -1,0 +1,25 @@
+{
+  "id": "kisavan-prof",
+  "name": "Ki'Savan — Recrutement PROF",
+  "mediaId": "REMPLACER-PAR-ID-DU-POST",
+  "keyword": "PROF",
+  "openingText": "Bonjour ! 👋 Merci pour ton intérêt. Tu donnes déjà des cours ou tu veux te lancer ? Ki'Savan met en relation les professeurs et les familles de Guadeloupe. Appuie sur le bouton pour recevoir le dossier d'inscription professeur.",
+  "openingTextVariants": [
+    "Bonjour ! 👋 Merci pour ton intérêt. Tu donnes déjà des cours ou tu veux te lancer ? Ki'Savan met en relation les professeurs et les familles de Guadeloupe. Appuie sur le bouton pour recevoir le dossier d'inscription professeur.",
+    "Salut ! Ravi de voir que tu veux rejoindre l'équipe des professeurs Ki'Savan 🎓 Appuie sur le bouton ci-dessous et je t'envoie tout de suite le dossier d'inscription.",
+    "Bonjour ! Ki'Savan recrute des professeurs partout en Guadeloupe (Grande-Terre, Basse-Terre et les îles). Clique sur le bouton pour recevoir le dossier d'inscription."
+  ],
+  "buttonTitle": "RECEVOIR LE DOSSIER",
+  "buttonPayload": "kisavan-prof:confirm",
+  "dmSteps": [],
+  "deliveryText": "Voici ton dossier professeur Ki'Savan 🎓 : REMPLACER-PAR-LIEN (formulaire d'inscription + entretien de 15 questions). Rémunération via le cadre SAP / Avance Immédiate URSSAF. Réponds ici si tu as la moindre question — on te recontacte sous 48h !",
+  "commentReplyText": "Merci ! Regarde tes DM, on t'a tout envoyé 📩",
+  "commentReplyTextVariants": [
+    "Merci ! Regarde tes DM, on t'a tout envoyé 📩",
+    "C'est dans tes messages privés 😉",
+    "Envoyé en DM ! Bienvenue chez Ki'Savan 🎓"
+  ],
+  "openingFailureReplyText": "On n'a pas pu t'envoyer de message privé 😕 Vérifie tes demandes de messages (Autres) ou autorise les DM, puis commente à nouveau PROF.",
+  "followGateEnabled": false,
+  "enabled": false
+}

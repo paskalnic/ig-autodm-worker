@@ -10,7 +10,7 @@ const baseCampaign: Campaign = {
   keyword: "PROMPT",
   openingText: "Mau promptnya?",
   openingTextVariants: ["Mau promptnya?"],
-  buttonTitle: "KIRIM",
+  buttonTitle: "CONTINUER",
   buttonPayload: "campaign-1:confirm",
   dmSteps: [],
   deliveryText: "Final prompt",
@@ -217,8 +217,8 @@ describe("processDeliveryJob", () => {
     expect(meta.buttonMessages).toEqual([
       {
         igUserId: "user-1",
-        text: "Follow dulu akun ini, lalu tap KIRIM lagi. Kalau tombolnya gak muncul, balas READY.",
-        buttonTitle: "KIRIM",
+        text: "Abonne-toi d'abord à ce compte, puis appuie à nouveau sur CONTINUER. Si le bouton ne s'affiche pas, réponds PRÊT.",
+        buttonTitle: "CONTINUER",
         buttonPayload: "campaign-1:confirm"
       }
     ]);
@@ -245,8 +245,8 @@ describe("processDeliveryJob", () => {
     expect(meta.buttonMessages).toEqual([
       {
         igUserId: "user-1",
-        text: "Follow dulu akun ini, lalu tap KIRIM lagi. Kalau tombolnya gak muncul, balas READY.",
-        buttonTitle: "KIRIM",
+        text: "Abonne-toi d'abord à ce compte, puis appuie à nouveau sur CONTINUER. Si le bouton ne s'affiche pas, réponds PRÊT.",
+        buttonTitle: "CONTINUER",
         buttonPayload: "campaign-1:confirm"
       }
     ]);
@@ -264,7 +264,7 @@ describe("processDeliveryJob", () => {
     repo.campaign = {
       ...baseCampaign,
       followGateEnabled: true,
-      followGateText: "Follow dulu akun ini, lalu pencet KIRIM lagi ya."
+      followGateText: "Follow dulu akun ini, lalu pencet CONTINUER lagi ya."
     };
     const meta = new FakeMetaClient();
     meta.follows = false;
@@ -275,8 +275,8 @@ describe("processDeliveryJob", () => {
     expect(meta.buttonMessages).toEqual([
       {
         igUserId: "user-1",
-        text: "Follow dulu akun ini, lalu pencet KIRIM lagi ya.",
-        buttonTitle: "KIRIM",
+        text: "Follow dulu akun ini, lalu pencet CONTINUER lagi ya.",
+        buttonTitle: "CONTINUER",
         buttonPayload: "campaign-1:confirm"
       }
     ]);
@@ -384,8 +384,8 @@ describe("processDeliveryJob", () => {
     expect(meta.buttonMessages).toEqual([
       {
         igUserId: "user-1",
-        text: "Follow dulu akun ini, lalu tap KIRIM lagi. Kalau tombolnya gak muncul, balas READY.",
-        buttonTitle: "KIRIM",
+        text: "Abonne-toi d'abord à ce compte, puis appuie à nouveau sur CONTINUER. Si le bouton ne s'affiche pas, réponds PRÊT.",
+        buttonTitle: "CONTINUER",
         buttonPayload: "campaign-1:confirm"
       }
     ]);

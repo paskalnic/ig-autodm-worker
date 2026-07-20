@@ -14,7 +14,32 @@ const COMMON_PHRASE_WORDS = new Set([
   "nya",
   "the",
   "untuk",
-  "yang"
+  "yang",
+  // Mots vides français (accents retirés par tokenize)
+  "avec",
+  "aussi",
+  "bonjour",
+  "bonsoir",
+  "cest",
+  "cette",
+  "dans",
+  "elle",
+  "elles",
+  "envoie",
+  "interesse",
+  "interessee",
+  "jaimerais",
+  "merci",
+  "moi",
+  "nous",
+  "pour",
+  "salut",
+  "sil",
+  "stp",
+  "svp",
+  "veux",
+  "voudrais",
+  "vous"
 ]);
 
 export function commentMatchesKeyword(commentText: string, keyword: string): boolean {

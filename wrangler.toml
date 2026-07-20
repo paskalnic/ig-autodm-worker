@@ -1,0 +1,31 @@
+name = "ig-autodm-worker"
+main = "src/index.ts"
+compatibility_date = "2026-05-07"
+workers_dev = true
+preview_urls = false
+
+[vars]
+AUTOMATION_ENABLED = "false"
+AUTO_FINAL_AFTER_OPENING = "false"
+META_SENDS_PER_MINUTE = "10"
+
+[triggers]
+crons = ["* * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ig-autodm-worker"
+database_id = "d1544837-7f07-42b6-86e0-010db151f48b"
+
+[[queues.producers]]
+binding = "DELIVERY_QUEUE"
+queue = "ig-autodm-deliveries"
+
+[[queues.consumers]]
+queue = "ig-autodm-deliveries"
+max_batch_size = 1
+max_batch_timeout = 1
+max_retries = 5
+retry_delay = 60
+max_concurrency = 2
+dead_letter_queue = "ig-autodm-deliveries-dlq"

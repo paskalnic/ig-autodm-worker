@@ -1091,12 +1091,12 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
             <div class="field-row">
               <label>
                 Identifiant
-                <input id="adminIdentifiant" name="username" type="text" autocomplete="username" spellcheck="false" placeholder="admin" autocomplete="username">
+                <input id="adminUsername" name="username" type="text" autocomplete="username" spellcheck="false" placeholder="admin" autocomplete="username">
                 <span class="help">Identifiant administrateur enregistré.</span>
               </label>
               <label>
                 Mot de passe
-                <input id="adminMot de passe" name="password" type="password" autocomplete="current-password" spellcheck="false" placeholder="Mot de passe" autocomplete="current-password">
+                <input id="adminPassword" name="password" type="password" autocomplete="current-password" spellcheck="false" placeholder="Mot de passe" autocomplete="current-password">
                 <span class="help">Mot de passe akun operator.</span>
               </label>
             </div>
@@ -1598,8 +1598,8 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
 
       async function connect(event) {
         event.preventDefault();
-        const username = $("adminIdentifiant").value.trim();
-        const password = $("adminMot de passe").value;
+        const username = $("adminUsername").value.trim();
+        const password = $("adminPassword").value;
         const adminToken = $("adminToken").value.trim();
         const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value || "";
         if (!username || !password || !adminToken) return showLoginNotice("Identifiant, password, dan security key wajib diisi.", false);
@@ -1622,8 +1622,8 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           state.csrfToken = body.csrfToken;
           applyBootstrap(body.bootstrap || await adminFetch("/admin/bootstrap"));
           showWorkspace();
-          $("adminIdentifiant").value = "";
-          $("adminMot de passe").value = "";
+          $("adminUsername").value = "";
+          $("adminPassword").value = "";
           $("adminToken").value = "";
           showLoginNotice("", true);
         } catch (error) {
@@ -1679,8 +1679,8 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         state.mode = "empty";
         state.dirty = false;
         state.saving = false;
-        $("adminIdentifiant").value = "";
-        $("adminMot de passe").value = "";
+        $("adminUsername").value = "";
+        $("adminPassword").value = "";
         $("adminToken").value = "";
         clearForm();
         showLoginScreen();

@@ -1097,7 +1097,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
               <label>
                 Mot de passe
                 <input id="adminPassword" name="password" type="password" autocomplete="current-password" spellcheck="false" placeholder="Mot de passe" autocomplete="current-password">
-                <span class="help">Mot de passe akun operator.</span>
+                <span class="help">Mot de passe du compte administrateur.</span>
               </label>
             </div>
             <label>
@@ -1143,7 +1143,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
             <span>Status: <strong id="readinessRuntime">memeriksa</strong></span>
             <span>Campagne active: <strong id="readinessLive">-</strong></span>
             <span>Connexion Instagram : <strong id="readinessToken">-</strong></span>
-            <span>Error: <strong id="readinessError">tidak ada</strong></span>
+            <span>Erreur : <strong id="readinessError">aucune</strong></span>
           </section>
 
           <section id="quickGuide" class="quick-guide" aria-label="Panduan cepat">
@@ -1192,7 +1192,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                 <form id="campaignForm" class="form-grid">
                   <div id="modeNote" class="mode-note">
                     <strong>Sélectionner une campagne</strong>
-                    <span class="help">Sélectionner une campagne yang sudah ada, atau buat campaign baru.</span>
+                    <span class="help">Sélectionnez une campagne existante ou créez-en une nouvelle.</span>
                   </div>
 
                   <div class="plain-guide">Complétez les éléments obligatoires : publication, mot-clé, premier message, bouton et message ou lien final. Les variantes pourront être ajoutées ensuite.</div>
@@ -1217,7 +1217,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                         </div>
                         <div id="mediaNotice" class="notice" role="status" aria-live="polite"></div>
                         <div id="postList" class="post-list" aria-label="Post Instagram terbaru">
-                          <div class="empty">Buka daftar post atau klik Actualiser post.</div>
+                          <div class="empty">Ouvrez la liste des publications ou cliquez sur Actualiser.</div>
                         </div>
                         <button id="reloadMediaButton" class="full" type="button">Actualiser post</button>
                       </div>
@@ -1231,7 +1231,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                       <p>Lorsqu’un commentaire contient ce mot ou cette expression, le parcours de messages démarre. La détection tolère la casse et de petites fautes de frappe.</p>
                     </div>
                     <div class="field-row">
-                      <label>Nom de la campagne<input id="name" name="name" maxlength="80" required placeholder="Contoh: Blue Green Guide"><span class="help">Ce nom apparaît uniquement dans le tableau de bord.</span><span id="nameError" class="field-error"></span></label>
+                      <label>Nom de la campagne<input id="name" name="name" maxlength="80" required placeholder="Exemple : Défi Ki’Savan"><span class="help">Ce nom apparaît uniquement dans le tableau de bord.</span><span id="nameError" class="field-error"></span></label>
                       <label>Mot ou expression déclencheur<input id="keyword" name="keyword" maxlength="80" required placeholder="Blue Green"><span class="help">Saisissez le mot-clé principal. Les petites fautes seront détectées automatiquement.</span><span id="keywordError" class="field-error"></span></label>
                     </div>
                   </section>
@@ -1241,29 +1241,29 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                       <h4>3. Parcours de messages</h4>
                       <p>Voici ce que la personne recevra : un premier message, un bouton, puis le message ou le lien final.</p>
                     </div>
-                    <label>Premier message privé<textarea id="openingText" name="openingText" maxlength="640" required placeholder="Prompt-nya sudah prêt. Tekan tombol di bawah ini."></textarea><span class="help">Message envoyé après le commentaire contenant le mot-clé.</span><span id="openingTextError" class="field-error"></span></label>
+                    <label>Premier message privé<textarea id="openingText" name="openingText" maxlength="640" required placeholder="Ton contenu est prêt. Appuie sur le bouton ci-dessous."></textarea><span class="help">Message envoyé après le commentaire contenant le mot-clé.</span><span id="openingTextError" class="field-error"></span></label>
                     <label>Tombol di Premier message privé<input id="buttonTitle" name="buttonTitle" maxlength="20" required><span class="help">Ce bouton mène au message ou au lien final. 20 caractères maximum.</span><span id="buttonTitleError" class="field-error"></span></label>
                     <div id="followGateCard" class="option-card">
                       <label class="check"><input id="followGateEnabled" name="followGateEnabled" type="checkbox"> Exiger un abonnement avant le message final</label>
-                      <span class="help">Kalau user belum follow saat tombol diklik, DM akan minta follow dulu dan menampilkan tombol retry. Balasan READY tetap jadi fallback.</span>
+                      <span class="help">Si la personne ne suit pas encore le compte lorsqu’elle clique, le DM lui demandera de s’abonner puis affichera un bouton pour réessayer. La réponse PRÊT reste disponible en secours.</span>
                       <span id="followGateEnabledError" class="field-error"></span>
-                      <label>Teks saat belum follow<textarea id="followGateText" name="followGateText" maxlength="640" placeholder="Follow dulu akun ini, lalu tap tombol ini lagi. Kalau tombolnya tidak muncul, réponds PRÊT."></textarea><span class="help">Facultatif. Kosong berarti pakai teks default otomatis sesuai nama tombol.</span><span id="followGateTextError" class="field-error"></span></label>
-                      <label>Tombol saat belum follow<input id="followGateButtonTitle" name="followGateButtonTitle" maxlength="20" placeholder="UDAH FOLLOW"><span class="help">Facultatif. Kosong berarti tombol retry memakai tombol Premier message privé.</span><span id="followGateButtonTitleError" class="field-error"></span></label>
+                      <label>Message si la personne n’est pas abonnée<textarea id="followGateText" name="followGateText" maxlength="640" placeholder="Abonne-toi d’abord à ce compte, puis appuie de nouveau sur ce bouton. Si le bouton n’apparaît pas, réponds PRÊT."></textarea><span class="help">Facultatif. Laissez vide pour utiliser automatiquement le message par défaut correspondant au bouton.</span><span id="followGateTextError" class="field-error"></span></label>
+                      <label>Bouton si la personne n’est pas abonnée<input id="followGateButtonTitle" name="followGateButtonTitle" maxlength="20" placeholder="JE SUIS ABONNÉ"><span class="help">Facultatif. Laissez vide pour réutiliser le bouton du premier message privé.</span><span id="followGateButtonTitleError" class="field-error"></span></label>
                     </div>
                     <details class="template-panel">
                       <summary>
                         <span>
                           <strong>Facultatif: variasi Premier message privé</strong>
-                          <span>Gunakan beberapa versi agar pesan tidak selalu sama.</span>
+                          <span>Utilisez plusieurs versions pour varier les messages.</span>
                         </span>
                         <span class="summary-action">Buka</span>
                       </summary>
                       <div class="variant-library">
-                        <label>Variasi Premier message privé<textarea id="openingTextVariants" name="openingTextVariants" placeholder="Prompt-nya sudah prêt, tekan tombol di bawah ya&#10;Prompt sudah prêt. Lanjut lewat tombol ini."></textarea><span class="help">Satu variasi per baris. Premier message privé utama tetap ikut sebagai variasi.</span><span id="openingTextVariantsError" class="field-error"></span></label>
+                        <label>Variantes du premier message privé<textarea id="openingTextVariants" name="openingTextVariants" placeholder="Ton contenu est prêt, appuie sur le bouton ci-dessous.&#10;C’est prêt. Continue avec ce bouton."></textarea><span class="help">Une variante par ligne. Le premier message principal reste inclus dans la rotation.</span><span id="openingTextVariantsError" class="field-error"></span></label>
                         <div class="variant-library-head">
                           <div>
                             <strong>Library Premier message privé</strong>
-                            <span class="help">Klik template untuk menambahkannya ke variasi. Campagnes tetap perlu disimpan.</span>
+                            <span class="help">Cliquez sur un modèle pour l’ajouter aux variantes. Vous devrez ensuite enregistrer la campagne.</span>
                           </div>
                           <label>Rechercher<input id="openingTemplateSearch" placeholder="Rechercher Premier message privé…" autocomplete="off"></label>
                         </div>
@@ -1271,7 +1271,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                           <div class="empty">Aucun modèle disponible.</div>
                         </div>
                         <div class="template-actions">
-                          <button id="saveOpeningTemplatesButton" type="button">Simpan Premier message privé ke library</button>
+                          <button id="saveOpeningTemplatesButton" type="button">Enregistrer Premier message privé ke library</button>
                         </div>
                       </div>
                     </details>
@@ -1279,12 +1279,12 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                       <summary>
                         <span>
                           <strong>Facultatif: langkah DM tambahan</strong>
-                          <span id="dmStepSummary">Facultatif. Tanpa langkah tambahan, tombol pertama langsung mengirim prompt/link akhir.</span>
+                          <span id="dmStepSummary">Facultatif. Sans étape supplémentaire, le premier bouton envoie directement le message ou le lien final.</span>
                         </span>
                         <span class="summary-action">Atur</span>
                       </summary>
                       <div class="dm-step-editor">
-                        <p class="help">Gunakan jika user perlu melewati beberapa tombol sebelum menerima prompt/link akhir. Maksimal 3 langkah tambahan.</p>
+                        <p class="help">Utilisez cette option si la personne doit passer par plusieurs boutons avant de recevoir le message ou le lien final. Maximum : 3 étapes supplémentaires.</p>
                         <div id="dmStepsList" class="dm-step-list"></div>
                         <div class="dm-step-actions">
                           <span id="dmStepsError" class="field-error"></span>
@@ -1292,30 +1292,30 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                         </div>
                       </div>
                     </details>
-                    <label>Message ou lien final<textarea id="deliveryText" name="deliveryText" maxlength="2000" required placeholder="Tempel link Notion atau isi prompt lengkap di sini."></textarea><span class="help">Isi utama yang diterima user di akhir alur DM.</span><span id="deliveryTextError" class="field-error"></span></label>
+                    <label>Message ou lien final<textarea id="deliveryText" name="deliveryText" maxlength="2000" required placeholder="Collez ici le lien ou le contenu final."></textarea><span class="help">Contenu principal reçu à la fin du parcours en message privé.</span><span id="deliveryTextError" class="field-error"></span></label>
                   </section>
 
                   <section class="form-section">
                     <div class="form-section-head">
                       <h4>4. Réponse publique au commentaire</h4>
-                      <p>Muncul sebagai reply di komentar setelah Premier message privé terkirim. Kosongkan kalau tidak mau balasan publik.</p>
+                      <p>Cette réponse apparaît sous le commentaire après l’envoi du premier message privé. Laissez vide pour ne pas répondre publiquement.</p>
                     </div>
-                    <label>Réponse publique principale<textarea id="commentReplyText" name="commentReplyText" maxlength="300" placeholder="Cek DM kamu ya"></textarea><span class="help">Facultatif. Berguna untuk memberi tahu user bahwa DM sudah dikirim. Maksimal 300 karakter.</span><span id="commentReplyTextError" class="field-error"></span></label>
-                    <label>Balasan kalau DM gagal<textarea id="openingFailureReplyText" name="openingFailureReplyText" maxlength="300" placeholder="DM kamu belum bisa kami kirim. Buka izin DM, lalu komen PROMPT lagi sebagai komentar baru."></textarea><span class="help">Facultatif. Dikirim sebagai public reply kalau Premier message privé ditolak karena user belum bisa menerima pesan.</span><span id="openingFailureReplyTextError" class="field-error"></span></label>
+                    <label>Réponse publique principale<textarea id="commentReplyText" name="commentReplyText" maxlength="300" placeholder="Regarde tes messages privés 📩"></textarea><span class="help">Facultatif. Permet d’indiquer que le message privé a été envoyé. Maximum : 300 caractères.</span><span id="commentReplyTextError" class="field-error"></span></label>
+                    <label>Réponse si l’envoi du message privé échoue<textarea id="openingFailureReplyText" name="openingFailureReplyText" maxlength="300" placeholder="Nous n’avons pas pu t’envoyer de message privé. Autorise les demandes de messages, puis publie à nouveau le mot-clé dans un nouveau commentaire."></textarea><span class="help">Facultatif. Publiée en réponse au commentaire si Instagram refuse le premier message privé.</span><span id="openingFailureReplyTextError" class="field-error"></span></label>
                     <details class="template-panel">
                       <summary>
                         <span>
                           <strong>Facultatif: variasi balasan publik</strong>
-                          <span>Gunakan beberapa versi agar balasan komentar terasa lebih natural.</span>
+                          <span>Utilisez plusieurs versions pour rendre les réponses publiques plus naturelles.</span>
                         </span>
                         <span class="summary-action">Buka</span>
                       </summary>
                       <div class="variant-library">
-                        <label>Variasi balasan publik<textarea id="commentReplyTextVariants" name="commentReplyTextVariants" placeholder="Udah gue kirim ke DM&#10;Masuk DM ya&#10;Beres, cek DM kamu"></textarea><span class="help">Satu variasi per baris. Balasan utama tetap ikut sebagai variasi.</span><span id="commentReplyTextVariantsError" class="field-error"></span></label>
+                        <label>Variantes de réponse publique<textarea id="commentReplyTextVariants" name="commentReplyTextVariants" placeholder="C’est envoyé en message privé 📩&#10;Regarde tes messages privés 👋&#10;C’est prêt, vérifie tes messages privés."></textarea><span class="help">Une variante par ligne. La réponse principale reste incluse dans la rotation.</span><span id="commentReplyTextVariantsError" class="field-error"></span></label>
                         <div class="variant-library-head">
                           <div>
                             <strong>Library balasan publik</strong>
-                            <span class="help">Klik template untuk menambahkannya ke variasi. Campagnes tetap perlu disimpan.</span>
+                            <span class="help">Cliquez sur un modèle pour l’ajouter aux variantes. Vous devrez ensuite enregistrer la campagne.</span>
                           </div>
                           <label>Rechercher<input id="commentReplyTemplateSearch" placeholder="Rechercher balasan…" autocomplete="off"></label>
                         </div>
@@ -1323,7 +1323,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                           <div class="empty">Aucun modèle disponible.</div>
                         </div>
                         <div class="template-actions">
-                          <button id="saveCommentReplyTemplatesButton" type="button">Simpan balasan ke library</button>
+                          <button id="saveCommentReplyTemplatesButton" type="button">Enregistrer balasan ke library</button>
                         </div>
                       </div>
                     </details>
@@ -1340,11 +1340,11 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                     <summary>Paramètres avancés</summary>
                     <div class="advanced-body">
                       <div class="field-row">
-                        <label>ID post<input id="mediaId" name="mediaId" aria-required="true"><span class="help">Terisi otomatis dari post yang dipilih. Bisa ditempel manual jika daftar post gagal dimuat.</span><span id="mediaIdAdvancedError" class="field-error"></span></label>
-                        <label>ID campaign<input id="campaignId" name="campaignId" required><span class="help">Dibuat otomatis. Ubah hanya kalau kamu butuh ID tertentu.</span><span id="campaignIdError" class="field-error"></span></label>
+                        <label>ID post<input id="mediaId" name="mediaId" aria-required="true"><span class="help">Renseigné automatiquement à partir de la publication sélectionnée. Vous pouvez aussi coller l’identifiant manuellement si la liste ne se charge pas.</span><span id="mediaIdAdvancedError" class="field-error"></span></label>
+                        <label>Identifiant de campagne<input id="campaignId" name="campaignId" required><span class="help">Créé automatiquement. Modifiez-le uniquement si vous avez besoin d’un identifiant précis.</span><span id="campaignIdError" class="field-error"></span></label>
                       </div>
                       <div class="field-row">
-                        <label>Kode tombol<input id="buttonPayload" name="buttonPayload" required readonly><span class="help">Dibuat otomatis untuk mengenali tombol yang diklik user.</span><span id="buttonPayloadError" class="field-error"></span></label>
+                        <label>Code du bouton<input id="buttonPayload" name="buttonPayload" required readonly><span class="help">Créé automatiquement pour identifier le bouton utilisé.</span><span id="buttonPayloadError" class="field-error"></span></label>
                       </div>
                     </div>
                   </details>
@@ -1375,7 +1375,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                   <strong>Vérifications avant activation</strong>
                     <button id="readyPost" class="readiness-item missing" type="button"><span>Post</span><span>Non sélectionnée</span></button>
                     <button id="readyKeyword" class="readiness-item missing" type="button"><span>Mot-clé</span><span>Non renseigné</span></button>
-                    <button id="readyOpening" class="readiness-item missing" type="button"><span>Premier message privé + tombol</span><span>Incomplet</span></button>
+                    <button id="readyOpening" class="readiness-item missing" type="button"><span>Premier message privé + bouton</span><span>Incomplet</span></button>
                     <button id="readyFollowGate" class="readiness-item missing" type="button"><span>Follow gate</span><span>Désactivé</span></button>
                     <button id="readyFinal" class="readiness-item missing" type="button"><span>Message ou lien final</span><span>Non renseigné</span></button>
                     <button id="readyReply" class="readiness-item ok" type="button"><span>Réponse publique</span><span>Désactivé</span></button>
@@ -1390,14 +1390,14 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                       <span class="comment-avatar">U</span>
                       <div class="comment-copy">
                         <strong>@user</strong>
-                        <span id="previewUserComment" class="preview-empty">Mot ou expression déclencheur belum diisi.</span>
+                        <span id="previewUserComment" class="preview-empty">Mot ou expression déclencheur non renseigné.</span>
                       </div>
                     </div>
                     <div class="comment-line comment-reply">
                     <span class="comment-avatar">B</span>
                       <div class="comment-copy">
                         <strong>@example_creator</strong>
-                        <span id="previewPublicReply" class="preview-empty">Facultatif. Kosong berarti tidak membalas komentar publik.</span>
+                        <span id="previewPublicReply" class="preview-empty">Facultatif. Laissez vide pour ne pas répondre publiquement.</span>
                       </div>
                     </div>
                   </div>
@@ -1418,11 +1418,11 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                     </div>
                     <div id="previewDmThread" class="dm-thread">
                       <div class="dm-card">
-                        <p id="previewOpening" class="preview-empty">Premier message privé belum diisi.</p>
+                        <p id="previewOpening" class="preview-empty">Premier message privé non renseigné.</p>
                         <div id="previewButtonTitle" class="dm-button-preview">AFFICHER LA SUITE</div>
                       </div>
                       <div id="previewTapBubble" class="dm-bubble user">AFFICHER LA SUITE</div>
-                      <div id="previewDelivery" class="dm-bubble brand preview-empty">Message ou lien final belum diisi.</div>
+                      <div id="previewDelivery" class="dm-bubble brand preview-empty">Message ou lien final non renseigné.</div>
                     </div>
                   </div>
                 </div>
@@ -1446,7 +1446,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
                   </div>
                 </div>
                 <div>
-                  <h3>Campagnes dipilih <span id="selectedState" class="pill off">kosong</span></h3>
+                  <h3>Campagne sélectionnée <span id="selectedState" class="pill off">aucune</span></h3>
                   <div class="runtime-list">
                     <div class="runtime-item"><span>Mot-clé</span><strong id="selectedKeyword">-</strong></div>
                     <div class="runtime-item"><span>ID post</span><strong id="selectedMedia">-</strong></div>
@@ -1602,8 +1602,8 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const password = $("adminPassword").value;
         const adminToken = $("adminToken").value.trim();
         const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value || "";
-        if (!username || !password || !adminToken) return showLoginNotice("Identifiant, password, dan security key wajib diisi.", false);
-        if (${turnstileEnabled ? "true" : "false"} && !turnstileToken) return showLoginNotice("Selesaikan verifikasi keamanan dulu", false);
+        if (!username || !password || !adminToken) return showLoginNotice("L’identifiant, le mot de passe et la clé de sécurité sont obligatoires.", false);
+        if (${turnstileEnabled ? "true" : "false"} && !turnstileToken) return showLoginNotice("Terminez d’abord la vérification de sécurité.", false);
         setLoginLoading(true);
         try {
           const response = await fetch("/admin/session", {
@@ -1620,7 +1620,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           });
           const body = await response.json().catch(() => ({}));
           if (!response.ok) {
-            const error = new Error(body.error || "Login gagal");
+            const error = new Error(body.error || "Échec de la connexion");
             error.status = response.status;
             throw error;
           }
@@ -1632,7 +1632,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           $("adminToken").value = "";
           showLoginNotice("", true);
         } catch (error) {
-          const message = error.status === 401 || error.status === 403 ? "Login gagal" : error.message || "Akses gagal";
+          const message = error.status === 401 || error.status === 403 ? "Échec de la connexion" : error.message || "Échec de l’accès";
           clearToken();
           showLoginNotice(message, false);
           window.turnstile?.reset?.();
@@ -1698,7 +1698,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
       }
 
       async function lockConsole() {
-        if (!confirmDiscard("mengunci dashboard")) return;
+        if (!confirmDiscard("verrouiller le tableau de bord")) return;
         await revokeSession();
         clearToken();
       }
@@ -1715,7 +1715,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
       }
 
       async function refreshAll() {
-        if (!state.csrfToken) throw new Error("Login admin belum aktif");
+        if (!state.csrfToken) throw new Error("La session administrateur n’est pas active");
         setWorkspaceLoading(true);
         try {
           applyBootstrap(await adminFetch("/admin/bootstrap"));
@@ -1723,7 +1723,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         } catch (error) {
           if (error.status === 401 || error.status === 403) {
             clearToken();
-            showLoginNotice("Sesi login berakhir. Silakan masuk lagi.", false);
+            showLoginNotice("Votre session a expiré. Connectez-vous à nouveau.", false);
           }
           throw error;
         } finally {
@@ -1737,11 +1737,11 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
       }
 
       async function guardedRefreshAll() {
-        if (!confirmDiscard("memuat ulang data")) return;
+        if (!confirmDiscard("recharger les données")) return;
         try {
           await refreshAll();
         } catch (error) {
-          showNotice(error.message || "Data gagal dimuat ulang.", false);
+          showNotice(error.message || "Impossible de recharger les données.", false);
         }
       }
 
@@ -1787,7 +1787,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const token = dashboard?.token || {};
         $("tokenSource").textContent = token.source || "-";
         $("tokenExpiry").textContent = formatDate(token.expiresAt);
-        $("tokenError").textContent = token.lastError || "tidak ada";
+        $("tokenError").textContent = token.lastError || "aucune";
         $("runtimeStatus").textContent = token.lastError ? "cek" : "online";
         $("runtimeStatus").className = "pill " + (token.lastError ? "warn" : "ok");
         $("sendLimit").textContent = (dashboard?.limits?.metaSendsPerMinute ?? "-") + "/min";
@@ -1795,7 +1795,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         $("readinessRuntime").textContent = token.lastError ? "cek token" : "prêt";
         $("readinessLive").textContent = String(counts.enabledCampagness ?? 0);
         $("readinessToken").textContent = token.source || "-";
-        $("readinessError").textContent = token.lastError || "tidak ada";
+        $("readinessError").textContent = token.lastError || "aucune";
       }
 
       function renderCampagness() {
@@ -1804,7 +1804,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         if (!state.campaigns.length) {
           const empty = document.createElement("div");
           empty.className = "empty";
-          empty.textContent = "Belum ada campaign. Klik Buat campaign.";
+          empty.textContent = "Aucune campagne. Cliquez sur Créer une campagne.";
           list.append(empty);
           return;
         }
@@ -1820,11 +1820,11 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           title.textContent = campaign.name || campaign.id;
 
           const meta = document.createElement("small");
-          meta.textContent = campaign.keyword ? "Mot-clé: " + campaign.keyword : "Mot-clé belum diisi";
+          meta.textContent = campaign.keyword ? "Mot-clé : " + campaign.keyword : "Mot-clé non renseigné";
 
           const status = document.createElement("span");
           status.className = "pill " + (campaign.enabled ? "ok" : "off");
-          status.textContent = campaign.enabled ? "aktif" : "draft";
+          status.textContent = campaign.enabled ? "active" : "brouillon";
 
           row.append(title, meta, status);
           list.append(row);
@@ -1841,7 +1841,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           state.mediaLoaded = true;
           renderMedia();
         } catch (error) {
-          renderMedia(error.message || "Post gagal dimuat");
+          renderMedia(error.message || "Impossible de charger les publications");
         } finally {
           mediaLoading = false;
           $("reloadMediaButton").disabled = false;
@@ -1861,7 +1861,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         if (!state.media.length) {
           const empty = document.createElement("div");
           empty.className = "empty";
-          empty.textContent = errorMessage ? "Post gagal dimuat. Tempel ID post di Paramètres avancés." : "Publications récentes belum muncul. Klik Actualiser, atau tempel ID post di Paramètres avancés.";
+          empty.textContent = errorMessage ? "Impossible de charger les publications. Tempel ID post di Paramètres avancés." : "Publications récentes belum muncul. Klik Actualiser, atau tempel ID post di Paramètres avancés.";
           list.append(empty);
           return;
         }
@@ -1937,7 +1937,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         $("enabled").checked = false;
         $("followGateEnabled").checked = false;
         $("buttonTitle").value = "AFFICHER LA SUITE";
-        $("commentReplyText").value = "Cek DM kamu ya";
+        $("commentReplyText").value = "Regarde tes messages privés 📩";
         $("commentReplyTextVariants").value = "";
         $("openingTextVariants").value = "";
         renderDmSteps([]);
@@ -1962,7 +1962,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         setFormEnabled(true);
         updateWorkspaceChrome();
         state.dirty = false;
-        updateFormStatus("Draft baru. Simpan sebelum campaign diaktifkan.", "warn");
+        updateFormStatus("Draft baru. Enregistrer sebelum campaign diaktifkan.", "warn");
         updateSummaryPreview();
         updateActivationPanel();
         if (!selectedMedia) void ensureMediaLoaded();
@@ -2019,7 +2019,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         setFormEnabled(true);
         updateWorkspaceChrome();
         state.dirty = false;
-        updateFormStatus(campaign.enabled ? "Aktif. Perubahan mulai berlaku setelah disimpan." : "Draft tersimpan. Aktifkan setelah semua isi dicek.", campaign.enabled ? "ok" : "warn");
+        updateFormStatus(campaign.enabled ? "Aktif. Perubahan mulai berlaku setelah disimpan." : "Draft enregistré. Aktifkan setelah semua isi dicek.", campaign.enabled ? "ok" : "warn");
         updateSummaryPreview();
         updateActivationPanel(campaign);
       }
@@ -2030,7 +2030,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         clearFieldErrors();
         const currentId = state.mode === "edit" ? state.selectedId : $("campaignId").value.trim();
         const campaignId = slugify(currentId);
-        if (!campaignId) return showNotice("ID campaign wajib diisi.", false);
+        if (!campaignId) return showNotice("Identifiant de campagne wajib diisi.", false);
         $("campaignId").value = campaignId;
         syncPayloadFromCampagnesId();
         if (!requireSelectedPost()) return;
@@ -2062,7 +2062,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         payload.buttonPayload = campaignId + ":confirm";
         payload.writeMode = state.mode === "create" ? "create" : "update";
         const currentCampagnes = state.campaigns.find((item) => item.id === campaignId);
-        if (forcedEnabled === null && currentCampagnes?.enabled && !confirm("Campagnes ini sedang aktif. Perubahan akan mulai berlaku setelah disimpan. Lanjutkan?")) return;
+        if (forcedEnabled === null && currentCampagnes?.enabled && !confirm("Cette campagne est active. Les changements prendront effet après l’enregistrement. Continuer ?")) return;
 
         state.saving = true;
         updateActionLock();
@@ -2073,18 +2073,18 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
           });
-          showNotice("Tersimpan", true);
-          setSaveState("tersimpan", "ok");
+          showNotice("Enregistré", true);
+          setSaveState("enregistré", "ok");
           state.dirty = false;
-          updateFormStatus(payload.enabled ? "Tersimpan dan aktif." : "Tersimpan sebagai draft. Campagnes belum merespons komentar sampai diaktifkan.", payload.enabled ? "ok" : "warn");
+          updateFormStatus(payload.enabled ? "Enregistré dan aktif." : "Enregistré sebagai draft. Campagnes belum merespons komentar sampai diaktifkan.", payload.enabled ? "ok" : "warn");
           upsertLocalCampagnes(saved?.campaign || payload);
           await refreshDashboardOnly();
           selectCampagnes(campaignId, true);
         } catch (error) {
           showFieldErrors(error.details);
-          showNotice(error.message || "Campagnes gagal disimpan.", false);
+          showNotice(error.message || "Impossible d’enregistrer la campagne.", false);
           setSaveState("error", "bad");
-          updateFormStatus(error.message || "Campagnes gagal disimpan.", "bad");
+          updateFormStatus(error.message || "Impossible d’enregistrer la campagne.", "bad");
         } finally {
           state.saving = false;
           updateActionLock();
@@ -2098,14 +2098,14 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         if (!requireSelectedPost()) return;
         if (!$("campaignForm").reportValidity()) return;
         const summary = $("summaryPreview").querySelector("span").textContent;
-        if (!confirm("Activer la campagne ini?\\n\\n" + summary + "\\n\\nSetelah aktif, komentar yang cocok dengan kata pemicu bisa langsung diproses.")) return;
+        if (!confirm("Activer cette campagne ?\\n\\n" + summary + "\\n\\nUne fois active, les commentaires correspondant au mot-clé pourront être traités immédiatement.")) return;
         await saveCampagnes(null, true);
       }
 
       async function pauseCampagnes() {
         if (state.mode !== "edit" || !state.selectedId || state.saving) return;
-        if (state.dirty && !confirm("Jeda hanya berlaku untuk campaign yang sudah tersimpan. Perubahan yang belum disimpan akan dibuang. Lanjutkan?")) return;
-        if (!confirm("Mettre en pause ini? Auto-reply berhenti sampai campaign diaktifkan lagi.")) return;
+        if (state.dirty && !confirm("Jeda hanya berlaku untuk campaign yang sudah enregistré. Perubahan yang belum disimpan akan dibuang. Lanjutkan?")) return;
+        if (!confirm("Mettre cette campagne en pause ? Les réponses automatiques seront interrompues jusqu’à sa réactivation.")) return;
         state.saving = true;
         updateActionLock();
         try {
@@ -2124,7 +2124,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           await refreshDashboardOnly();
           selectCampagnes(state.selectedId, true);
         } catch (error) {
-          showNotice(error.message || "Campagnes gagal dijeda.", false);
+          showNotice(error.message || "Impossible de mettre la campagne en pause.", false);
           setSaveState("error", "bad");
         } finally {
           state.saving = false;
@@ -2137,18 +2137,18 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const campaign = state.campaigns.find((item) => item.id === state.selectedId);
         const campaignId = state.selectedId;
         const campaignName = campaign?.name || campaignId;
-        if (state.dirty && !confirm("Perubahan yang belum disimpan akan dibuang sebelum campaign dihapus. Lanjutkan?")) return;
-        if (!confirm("Supprimer la campagne ini?\\n\\n" + campaignName + "\\n\\nData delivery dan riwayat campaign ini ikut dihapus.")) return;
-        const confirmation = prompt("Ketik ID campaign untuk konfirmasi hapus:\\n" + campaignId);
+        if (state.dirty && !confirm("Les changements non enregistrés seront perdus avant la suppression de la campagne. Continuer ?")) return;
+        if (!confirm("Supprimer cette campagne ?\\n\\n" + campaignName + "\\n\\nLes livraisons et l’historique de cette campagne seront également supprimés.")) return;
+        const confirmation = prompt("Ketik Identifiant de campagne untuk konfirmasi hapus:\\n" + campaignId);
         if (confirmation !== campaignId) {
-          showNotice("Hapus dibatalkan. ID campaign tidak cocok.", false);
+          showNotice("Hapus dibatalkan. Identifiant de campagne tidak cocok.", false);
           return;
         }
 
         state.saving = true;
         updateActionLock();
         try {
-          setSaveState("menghapus…", "warn");
+          setSaveState("suppression…", "warn");
           await adminFetch("/admin/campaigns/" + encodeURIComponent(campaignId), { method: "DELETE" });
           state.campaigns = state.campaigns.filter((item) => item.id !== campaignId);
           state.selectedId = null;
@@ -2157,10 +2157,10 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           renderCampagness();
           await refreshDashboardOnly();
           selectCampagnes("", true);
-          showNotice("Campagnes dihapus.", true);
+          showNotice("Campagne supprimée.", true);
           setSaveState("prêt", "off");
         } catch (error) {
-          showNotice(error.message || "Campagnes gagal dihapus.", false);
+          showNotice(error.message || "Impossible de supprimer la campagne.", false);
           setSaveState("error", "bad");
         } finally {
           state.saving = false;
@@ -2177,8 +2177,8 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         card.className = "activation-card " + (isLive ? "live" : "draft");
         $("activationTitle").textContent = isLive ? "Campagne active" : "Draft campaign";
         $("activationCopy").textContent = isLive
-          ? "Campagnes sedang aktif. Perubahan yang disimpan akan dipakai untuk komentar berikutnya."
-          : "Campagnes belum berjalan. Simpan sebagai draft, lalu aktifkan setelah dicek.";
+          ? "La campagne est active. Les changements enregistrés s’appliqueront aux prochains commentaires."
+          : "La campagne n’est pas active. Enregistrez-la comme brouillon, puis activez-la après vérification.";
         $("saveDraftButton").textContent = isLive ? "Enregistrer les modifications" : "Enregistrer le brouillon";
         $("goLiveButton").hidden = isLive || state.mode === "empty";
         $("pauseCampagnesButton").hidden = !isLive || state.mode !== "edit";
@@ -2207,7 +2207,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
 
       function requireSelectedPost() {
         if ($("mediaId").value.trim()) return true;
-        const message = "Choisir une publication yang akan dipantau dulu.";
+        const message = "Choisissez d’abord une publication à surveiller.";
         setFieldError("mediaId", message);
         $("postPickerPanel").open = true;
         updateFormStatus(message, "bad");
@@ -2229,7 +2229,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
       function markDirty() {
         if (state.mode === "empty") return;
         state.dirty = true;
-        updateFormStatus("Ada perubahan yang belum disimpan.", "warn");
+        updateFormStatus("Des modifications ne sont pas enregistrées.", "warn");
         scheduleSummaryPreview();
       }
 
@@ -2240,16 +2240,16 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
 
       function confirmDiscard(action) {
         if (!state.dirty) return true;
-        return confirm("Ada perubahan yang belum disimpan. Lanjut " + action + "?");
+        return confirm("Des modifications ne sont pas enregistrées. Lanjut " + action + "?");
       }
 
       function updateSelectionPanel(campaign) {
         $("selectedCampagnesId").textContent = campaign.name || campaign.id || "Campagnes baru";
-        $("selectedState").textContent = campaign.enabled ? "aktif" : "draft";
+        $("selectedState").textContent = campaign.enabled ? "active" : "brouillon";
         $("selectedState").className = "pill " + (campaign.enabled ? "ok" : "off");
         $("selectedKeyword").textContent = campaign.keyword || "-";
         $("selectedMedia").textContent = campaign.mediaId || "-";
-        $("selectedReply").textContent = campaign.commentReplyText || "tidak ada";
+        $("selectedReply").textContent = campaign.commentReplyText || "aucune";
         updatePostPickerLabel(campaign.mediaId);
       }
 
@@ -2259,7 +2259,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           ? "Sélectionnez une campagne ou créez-en une."
           : $("enabled").checked
             ? "Active : les modifications enregistrées s’appliqueront aux prochains commentaires."
-            : "Draft: aman diedit sebelum diaktifkan.";
+            : "Brouillon : vous pouvez le modifier avant de l’activer.";
       }
 
       function updateFormStatus(message, tone) {
@@ -2282,9 +2282,9 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const replyCount = collectVariantPool($("commentReplyText").value, $("commentReplyTextVariants").value).length;
         if (openingCount > 1) parts.push(openingCount + " variasi Premier message privé");
         if (replyCount > 1) parts.push(replyCount + " variasi balasan publik");
-        if ($("openingFailureReplyText").value.trim()) parts.push("Rescue DM gagal: nyala");
+        if ($("openingFailureReplyText").value.trim()) parts.push("Réponse de secours en cas d’échec du DM : activée");
         if ($("followGateEnabled").checked) parts.push("Follow gate: nyala");
-        parts.push($("enabled").checked ? "Status: aktif" : "Status: draft");
+        parts.push($("enabled").checked ? "Statut : active" : "Statut : brouillon");
         $("summaryPreview").querySelector("span").textContent = parts.join(" / ");
         updatePostPickerLabel();
         updateVisualPreview();
@@ -2311,11 +2311,11 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const dmSteps = isDmStepUiEnabled() ? readDmSteps({ allowPartial: true }).steps : [];
         const isLive = $("enabled").checked;
 
-        setPreviewText("previewUserComment", keyword, "Mot ou expression déclencheur belum diisi.");
-        setPreviewText("previewPublicReply", publicReply, "Facultatif. Kosong berarti tidak membalas komentar publik.");
+        setPreviewText("previewUserComment", keyword, "Mot ou expression déclencheur non renseigné.");
+        setPreviewText("previewPublicReply", publicReply, "Facultatif. Laissez vide pour ne pas répondre publiquement.");
         renderDmPreview(opening, buttonTitle, dmSteps, delivery, $("followGateEnabled").checked, $("followGateText").value.trim(), $("followGateButtonTitle").value.trim());
         updateReadinessChecklist();
-        $("previewState").textContent = isLive ? "aktif" : "draft";
+        $("previewState").textContent = isLive ? "active" : "brouillon";
         $("previewState").className = "pill " + (isLive ? "ok" : "off");
       }
 
@@ -2352,14 +2352,14 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const finalBubble = document.createElement("div");
         finalBubble.id = "previewDelivery";
         finalBubble.className = "dm-bubble brand" + (delivery ? "" : " preview-empty");
-        finalBubble.textContent = delivery || "Message ou lien final belum diisi.";
+        finalBubble.textContent = delivery || "Message ou lien final non renseigné.";
         thread.append(finalBubble);
       }
 
       function followGateInstruction(buttonTitle, customText) {
         if (customText?.trim()) return customText.trim();
-        const title = buttonTitle.trim() || "tombol tadi";
-        return "Follow dulu akun ini, lalu tap " + title + " lagi. Kalau tombolnya gak muncul, réponds PRÊT.";
+        const title = buttonTitle.trim() || "le bouton précédent";
+        return "Abonne-toi d’abord à ce compte, puis appuie de nouveau sur " + title + ". Si le bouton n’apparaît pas, réponds PRÊT.";
       }
 
       function appendPreviewCard(thread, text, buttonTitle, textId, buttonId, isStep) {
@@ -2368,12 +2368,12 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const copy = document.createElement("p");
         if (textId) copy.id = textId;
         copy.className = text ? "" : "preview-empty";
-        copy.textContent = text || (isStep ? "Pesan langkah belum diisi." : "Premier message privé belum diisi.");
+        copy.textContent = text || (isStep ? "Message de l’étape non renseigné." : "Premier message privé non renseigné.");
         const button = document.createElement("div");
         if (buttonId) button.id = buttonId;
         button.className = "dm-button-preview";
         button.classList.toggle("preview-empty", !buttonTitle);
-        button.textContent = buttonTitle || (isStep ? "Tombol langkah belum diisi." : "Tombol belum diisi.");
+        button.textContent = buttonTitle || (isStep ? "Bouton de l’étape non renseigné." : "Bouton non renseigné.");
         card.append(copy, button);
         thread.append(card);
       }
@@ -2383,7 +2383,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         if (id) bubble.id = id;
         bubble.className = "dm-bubble user";
         bubble.classList.toggle("preview-empty", !buttonTitle);
-        bubble.textContent = buttonTitle || "Tekan tombol";
+        bubble.textContent = buttonTitle || "Appuyer sur le bouton";
         thread.append(bubble);
       }
 
@@ -2486,9 +2486,9 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           const textArea = document.createElement("textarea");
           textArea.className = "dm-step-text";
           textArea.maxLength = 640;
-          textArea.placeholder = "Sebelum gue kirim promptnya, pilih dulu yang ini.";
+          textArea.placeholder = "Avant de t’envoyer la suite, choisis cette option.";
           textArea.value = step.text || "";
-          textLabel.append(textArea, helpNode("Pesan utama untuk langkah ini."));
+          textLabel.append(textArea, helpNode("Message principal de cette étape."));
 
           const buttonLabel = document.createElement("label");
           buttonLabel.textContent = "Tombol langkah";
@@ -2501,7 +2501,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
 
           const variantsLabel = document.createElement("label");
           variantsLabel.className = "dm-step-variants";
-          variantsLabel.textContent = "Variasi pesan langkah";
+          variantsLabel.textContent = "Variantes du message de l’étape";
           const variantsArea = document.createElement("textarea");
           variantsArea.className = "dm-step-variants-input";
           variantsArea.maxLength = 4096;
@@ -2539,7 +2539,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
               steps,
               invalid: {
                 node: text ? buttonNode : textNode,
-                message: "Langkah tambahan harus punya pesan dan tombol. Hapus langkah jika tidak dipakai."
+                message: "Chaque étape supplémentaire doit contenir un message et un bouton. Supprimez l’étape si elle n’est pas utilisée."
               }
             };
           }
@@ -2554,8 +2554,8 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
 
       function updateDmStepSummary(count = readDmSteps({ allowPartial: true }).steps.length) {
         $("dmStepSummary").textContent = count
-          ? count + " langkah tambahan sebelum prompt/link akhir."
-          : "Facultatif. Tanpa langkah tambahan, tombol pertama langsung mengirim prompt/link akhir.";
+          ? count + " étape(s) supplémentaire(s) avant le message ou le lien final."
+          : "Facultatif. Sans étape supplémentaire, le premier bouton envoie directement le message ou le lien final.";
       }
 
       function isDmStepUiEnabled() {
@@ -2593,14 +2593,14 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         $("reloadCampagnesButtonBottom").disabled = !formEnabled || state.saving;
       }
 
-      function setLoginLoading(loading, label = "Memeriksa akses…") {
+      function setLoginLoading(loading, label = "Vérification de l’accès…") {
         $("connectButton").disabled = loading;
         $("connectButton").textContent = loading ? label : "Masuk";
       }
 
       function setWorkspaceLoading(loading) {
         $("refreshButton").disabled = loading;
-        $("connectionState").textContent = loading ? "Memuat data…" : "Connecté";
+        $("connectionState").textContent = loading ? "Chargement des données…" : "Connecté";
       }
 
       function showLoginNotice(message, ok) {
@@ -2626,7 +2626,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
       function handleInvalidField(event) {
         const field = event.target;
         if (!field?.id) return;
-        const message = field.validationMessage || "Field ini perlu dicek.";
+        const message = field.validationMessage || "Ce champ doit être vérifié.";
         revealField(field.id);
         setFieldError(field.id, message);
         showNotice(message, false);
@@ -2639,9 +2639,9 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         if (firstField) {
           return labelForField(normalizeErrorField(firstField)) + ": " + fieldErrors[firstField][0];
         }
-        if (status === 409) return "ID campaign sudah dipakai. Ganti nama/ID atau edit campaign yang sudah ada.";
-        if (status === 404) return body?.error || "Data tidak ditemukan.";
-        return body?.error || "Request gagal (" + status + ")";
+        if (status === 409) return "Identifiant de campagne sudah dipakai. Ganti nama/ID atau edit campaign yang sudah ada.";
+        if (status === 404) return body?.error || "Données introuvables.";
+        return body?.error || "Échec de la requête (" + status + ")";
       }
 
       function clearFieldErrors() {
@@ -2716,23 +2716,23 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
 
       function labelForField(field) {
         const labels = {
-          id: "ID campaign",
-          campaignId: "ID campaign",
+          id: "Identifiant de campagne",
+          campaignId: "Identifiant de campagne",
           mediaId: "ID post",
           name: "Nom de la campagne",
           keyword: "Mot ou expression déclencheur",
           openingText: "Premier message privé",
-          openingTextVariants: "Variasi Premier message privé",
+          openingTextVariants: "Variantes du premier message privé",
           dmSteps: "Langkah DM tambahan",
           deliveryText: "Message ou lien final",
           commentReplyText: "Réponse publique",
-          openingFailureReplyText: "Balasan kalau DM gagal",
-          commentReplyTextVariants: "Variasi balasan publik",
+          openingFailureReplyText: "Réponse si l’envoi du message privé échoue",
+          commentReplyTextVariants: "Variantes de réponse publique",
           followGateEnabled: "Follow gate",
           followGateText: "Teks follow gate",
           followGateButtonTitle: "Tombol follow gate",
           buttonTitle: "Tombol",
-          buttonPayload: "Kode tombol"
+          buttonPayload: "Code du bouton"
         };
         return labels[field] || field;
       }
@@ -2754,7 +2754,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         if (!templates.length) {
           const empty = document.createElement("div");
           empty.className = "empty";
-          empty.textContent = query ? "Tidak ada template cocok." : "Aucun modèle disponible.";
+          empty.textContent = query ? "Aucun modèle correspondant." : "Aucun modèle disponible.";
           list.append(empty);
           return;
         }
@@ -2768,7 +2768,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           button.addEventListener("click", () => {
             const latest = new Set(collectVariantPool($(primaryId).value, $(textareaId).value));
             if (latest.has(template.text)) {
-              showNotice("Template ini sudah ada di campaign.", true);
+              showNotice("Ce modèle est déjà présent dans la campagne.", true);
               return;
             }
             appendVariantLine(textareaId, template.text);
@@ -2784,8 +2784,8 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         const primaryId = kind === "opening" ? "openingText" : "commentReplyText";
         const button = kind === "opening" ? $("saveOpeningTemplatesButton") : $("saveCommentReplyTemplatesButton");
         const variants = collectVariantPool($(primaryId).value, $(textareaId).value);
-        if (!variants.length) return showNotice("Belum ada variasi untuk disimpan.", false);
-        if (!confirm("Simpan " + variants.length + " template ke library?\\n\\nIni tidak menyimpan perubahan campaign.")) return;
+        if (!variants.length) return showNotice("Aucune variante à enregistrer.", false);
+        if (!confirm("Enregistrer " + variants.length + " modèle(s) dans la bibliothèque ?\\n\\nCette action n’enregistre pas les modifications de la campagne.")) return;
         button.disabled = true;
         try {
           await adminFetch("/admin/variant-templates/bulk", {
@@ -2795,17 +2795,17 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
           });
           await loadVariantTemplates();
           renderTemplateLibraries();
-          showNotice("Library template tersimpan. Enregistrer la campagne jika ada perubahan.", true);
+          showNotice("Library template enregistré. Enregistrer la campagne jika ada perubahan.", true);
         } catch (error) {
           const textErrors = error.details?.fieldErrors?.texts;
           if (textErrors?.length) {
             const message = kind === "comment_reply"
-              ? "Ada balasan publik di library yang lebih dari 300 karakter. Cek baris yang terlalu panjang."
+              ? "Certaines réponses publiques de la bibliothèque dépassent 300 caractères. Vérifiez les lignes trop longues."
               : textErrors[0];
             setFieldError(textareaId, message);
             $(textareaId).focus();
           }
-          showNotice(error.message || "Template gagal disimpan.", false);
+          showNotice(error.message || "Impossible d’enregistrer le modèle.", false);
         } finally {
           button.disabled = false;
         }
@@ -2829,7 +2829,7 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
         inactivityTimer = setTimeout(async () => {
           await revokeSession();
           clearToken();
-          showLoginNotice("Dashboard terkunci karena tidak aktif.", false);
+          showLoginNotice("Le tableau de bord a été verrouillé pour inactivité.", false);
         }, INACTIVITY_TIMEOUT_MS);
       }
 

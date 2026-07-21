@@ -13,3 +13,5 @@ coverage/
 .secrets.json
 .dev.vars*
 .env*
+
+*.patch

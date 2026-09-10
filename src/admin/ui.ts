@@ -1611,7 +1611,12 @@ export function adminUiPage(nonce: string, turnstileSiteKey?: string): string {
             cache: "no-store",
             credentials: "same-origin",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password, adminToken, turnstileToken })
+            body: JSON.stringify({
+              username,
+              password,
+              adminToken,
+              ...(turnstileToken ? { turnstileToken } : {})
+            })
           });
           const body = await response.json().catch(() => ({}));
           if (!response.ok) {

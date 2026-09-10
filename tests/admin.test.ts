@@ -85,6 +85,8 @@ describe("admin routes", () => {
     expect(html).not.toContain("test-admin-token-with-enough-entropy");
     expect(html).not.toContain("ig-token");
     expect(html).not.toContain("test-meta-app-secret-with-enough-entropy");
+    expect(html).toContain("...(turnstileToken ? { turnstileToken } : {})");
+    expect(html).not.toContain("JSON.stringify({ username, password, adminToken, turnstileToken })");
   });
 
   it("serves Turnstile on the admin UI only when Turnstile keys are configured", async () => {

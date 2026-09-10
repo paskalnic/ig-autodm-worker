@@ -70,6 +70,12 @@ describe("flow step resolver", () => {
     expect(resolveTextAdvance(campaign, "follow_requested", "sudah followed")).toEqual({ type: "final" });
   });
 
+  it("accepts common French manual follow retry text, including accents", () => {
+    expect(resolveTextAdvance(campaign, "follow_requested", "PRÊT")).toEqual({ type: "final" });
+    expect(resolveTextAdvance(campaign, "follow_requested", "C’est fait")).toEqual({ type: "final" });
+    expect(resolveTextAdvance(campaign, "follow_requested", "Je suis abonné")).toEqual({ type: "final" });
+  });
+
   it("keeps manual follow retry text inert before a follow request exists", () => {
     expect(resolveTextAdvance(campaign, "commented", "I FOLLOWED")).toBeNull();
     expect(resolveTextAdvance(campaign, "commented", "READY")).toBeNull();

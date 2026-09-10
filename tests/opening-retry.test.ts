@@ -15,6 +15,12 @@ describe("isOpeningRetryComment", () => {
     expect(isOpeningRetryComment("can't see it in my inbox")).toBe(true);
   });
 
+  it("recognizes French comments from users whose DM did not arrive", () => {
+    expect(isOpeningRetryComment("Je n’ai rien reçu")).toBe(true);
+    expect(isOpeningRetryComment("Pas de DM")).toBe(true);
+    expect(isOpeningRetryComment("Je ne vois pas le message")).toBe(true);
+  });
+
   it("does not treat normal comments or trigger comments as opening retries", () => {
     expect(isOpeningRetryComment("PROMPT")).toBe(false);
     expect(isOpeningRetryComment("makasih min")).toBe(false);

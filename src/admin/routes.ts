@@ -87,7 +87,7 @@ const variantTemplateSchema = variantTemplateBaseSchema.superRefine((value, ctx)
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["text"],
-      message: "Public comment reply templates must be 300 characters or less"
+      message: "Les modèles de réponse publique ne doivent pas dépasser 300 caractères"
     });
   }
 });
@@ -101,7 +101,7 @@ const variantTemplateBulkSchema = z.object({
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["texts", index],
-        message: "Public comment reply templates must be 300 characters or less"
+        message: "Les modèles de réponse publique ne doivent pas dépasser 300 caractères"
       });
     }
   });
@@ -297,19 +297,19 @@ async function parseJson(
   c: Context<any>
 ): Promise<{ ok: true; value: unknown } | { ok: false; status: 400 | 413; error: string }> {
   if (contentLengthTooLarge(c, MAX_ADMIN_JSON_BYTES)) {
-    return { ok: false, status: 413, error: "Request body too large" };
+    return { ok: false, status: 413, error: "Le corps de la requête est trop volumineux" };
   }
 
   const bodyText = await c.req.text();
   if (utf8ByteLength(bodyText) > MAX_ADMIN_JSON_BYTES) {
-    return { ok: false, status: 413, error: "Request body too large" };
+    return { ok: false, status: 413, error: "Le corps de la requête est trop volumineux" };
   }
-  if (!bodyText.trim()) return { ok: false, status: 400, error: "Invalid JSON body" };
+  if (!bodyText.trim()) return { ok: false, status: 400, error: "Corps JSON invalide" };
 
   try {
     return { ok: true, value: JSON.parse(bodyText) as unknown };
   } catch {
-    return { ok: false, status: 400, error: "Invalid JSON body" };
+    return { ok: false, status: 400, error: "Corps JSON invalide" };
   }
 }
 
@@ -317,19 +317,19 @@ async function parseOptionalJson(
   c: Context<any>
 ): Promise<{ ok: true; value: unknown } | { ok: false; status: 400 | 413; error: string }> {
   if (contentLengthTooLarge(c, MAX_ADMIN_JSON_BYTES)) {
-    return { ok: false, status: 413, error: "Request body too large" };
+    return { ok: false, status: 413, error: "Le corps de la requête est trop volumineux" };
   }
 
   const bodyText = await c.req.text();
   if (utf8ByteLength(bodyText) > MAX_ADMIN_JSON_BYTES) {
-    return { ok: false, status: 413, error: "Request body too large" };
+    return { ok: false, status: 413, error: "Le corps de la requête est trop volumineux" };
   }
   if (!bodyText.trim()) return { ok: true, value: {} };
 
   try {
     return { ok: true, value: JSON.parse(bodyText) as unknown };
   } catch {
-    return { ok: false, status: 400, error: "Invalid JSON body" };
+    return { ok: false, status: 400, error: "Corps JSON invalide" };
   }
 }
 
@@ -509,13 +509,13 @@ async function verifyTurnstile(c: AdminContext, token: string | undefined): Prom
 
 adminRoutes.post("/session", async (c) => {
   if (!adminTokenConfigured(c.env.ADMIN_TOKEN)) {
-    return c.json({ error: "Admin authentication is not configured" }, 503);
+    return c.json({ error: "L’authentification administrateur n’est pas configurée" }, 503);
   }
   if (!adminLoginConfigured(c.env)) {
-    return c.json({ error: "Admin login is not configured" }, 503);
+    return c.json({ error: "La connexion administrateur n’est pas configurée" }, 503);
   }
   if (!adminStorageConfigured(c.env.DB)) {
-    return c.json({ error: "Admin storage is not configured" }, 503);
+    return c.json({ error: "Le stockage administrateur n’est pas configuré" }, 503);
   }
 
   const repo = new Repository(c.env.DB);
@@ -527,7 +527,7 @@ adminRoutes.post("/session", async (c) => {
   });
 
   if (!rate.allowed) {
-    return c.json({ error: "Too many login attempts", resetAt: rate.resetAt }, 429);
+    return c.json({ error: "Trop de tentatives de connexion", resetAt: rate.resetAt }, 429);
   }
 
   const body = await parseJson(c);
@@ -550,9 +550,9 @@ adminRoutes.post("/session", async (c) => {
     const status = failedRate.allowed ? 401 : 429;
     await repo.insertAdminAuditLog({ actorKeyHash, method: c.req.method, path: c.req.path, action: "login_failed", status });
     if (!failedRate.allowed) {
-      return c.json({ error: "Too many failed admin attempts", resetAt: failedRate.resetAt }, 429);
+      return c.json({ error: "Trop de tentatives d’administration ont échoué", resetAt: failedRate.resetAt }, 429);
     }
-    return c.json({ error: "Unauthorized" }, 401);
+    return c.json({ error: "Non autorisé" }, 401);
   }
 
   const sessionId = randomToken();
@@ -573,10 +573,10 @@ adminRoutes.post("/session", async (c) => {
 
 adminRoutes.get("/session", async (c) => {
   if (!adminTokenConfigured(c.env.ADMIN_TOKEN)) {
-    return c.json({ error: "Admin authentication is not configured" }, 503);
+    return c.json({ error: "L’authentification administrateur n’est pas configurée" }, 503);
   }
   if (!adminStorageConfigured(c.env.DB)) {
-    return c.json({ error: "Admin storage is not configured" }, 503);
+    return c.json({ error: "Le stockage administrateur n’est pas configuré" }, 503);
   }
 
   const repo = new Repository(c.env.DB);
@@ -587,14 +587,14 @@ adminRoutes.get("/session", async (c) => {
     windowSeconds: ADMIN_RATE_LIMIT.windowSeconds
   });
   if (!rate.allowed) {
-    return c.json({ error: "Rate limit exceeded", resetAt: rate.resetAt }, 429);
+    return c.json({ error: "Limite de requêtes dépassée", resetAt: rate.resetAt }, 429);
   }
 
   const resumed = await resumeAdminSession(c, repo);
   if (!resumed) {
     await repo.insertAdminAuditLog({ actorKeyHash, method: c.req.method, path: c.req.path, action: "session_resume_failed", status: 401 });
     c.header("Set-Cookie", clearSessionCookieHeader(c.req.url));
-    return c.json({ error: "Unauthorized" }, 401);
+    return c.json({ error: "Non autorisé" }, 401);
   }
 
   await repo.insertAdminAuditLog({ actorKeyHash, method: c.req.method, path: c.req.path, action: "session_resumed", status: 200 });
@@ -607,10 +607,10 @@ adminRoutes.use("*", async (c, next) => {
   const path = c.req.path;
   const action = `${method} ${path}`;
   if (!adminTokenConfigured(c.env.ADMIN_TOKEN)) {
-    return c.json({ error: "Admin authentication is not configured" }, 503);
+    return c.json({ error: "L’authentification administrateur n’est pas configurée" }, 503);
   }
   if (!adminStorageConfigured(c.env.DB)) {
-    return c.json({ error: "Admin storage is not configured" }, 503);
+    return c.json({ error: "Le stockage administrateur n’est pas configuré" }, 503);
   }
 
   const actorKeyHash = await actorHash(c);
@@ -622,7 +622,7 @@ adminRoutes.use("*", async (c, next) => {
   });
 
   if (!rate.allowed) {
-    return c.json({ error: "Rate limit exceeded", resetAt: rate.resetAt }, 429);
+    return c.json({ error: "Limite de requêtes dépassée", resetAt: rate.resetAt }, 429);
   }
 
   const auth = await authenticateAdmin(c, repo, actorKeyHash);
@@ -631,9 +631,9 @@ adminRoutes.use("*", async (c, next) => {
     const status = failedRate.allowed ? 401 : 429;
     await repo.insertAdminAuditLog({ actorKeyHash, method, path, action: "auth_failed", status });
     if (!failedRate.allowed) {
-      return c.json({ error: "Too many failed admin attempts", resetAt: failedRate.resetAt }, 429);
+      return c.json({ error: "Trop de tentatives d’administration ont échoué", resetAt: failedRate.resetAt }, 429);
     }
-    return c.json({ error: "Unauthorized" }, 401);
+    return c.json({ error: "Non autorisé" }, 401);
   }
   c.set("adminAuth", auth);
 
@@ -667,7 +667,7 @@ adminRoutes.get("/bootstrap", async (c) => {
 
 adminRoutes.get("/variant-templates", async (c) => {
   const parsedKind = variantKindSchema.optional().safeParse(c.req.query("kind"));
-  if (!parsedKind.success) return c.json({ error: "Invalid variant kind" }, 400);
+  if (!parsedKind.success) return c.json({ error: "Type de variante invalide" }, 400);
 
   const repo = new Repository(c.env.DB);
   return c.json({ templates: await repo.listMessageVariantTemplates(parsedKind.data) });
@@ -681,7 +681,7 @@ adminRoutes.post("/variant-templates", async (c) => {
 
   const parsed = variantTemplateSchema.safeParse(body.value);
   if (!parsed.success) {
-    return c.json({ error: "Invalid variant template", details: parsed.error.flatten() }, 400);
+    return c.json({ error: "Modèle de variante invalide", details: parsed.error.flatten() }, 400);
   }
 
   const id = `variant_${parsed.data.kind}_${(await sha256Hex(parsed.data.text)).slice(0, 24)}`;
@@ -698,7 +698,7 @@ adminRoutes.post("/variant-templates/bulk", async (c) => {
 
   const parsed = variantTemplateBulkSchema.safeParse(body.value);
   if (!parsed.success) {
-    return c.json({ error: "Invalid variant templates", details: parsed.error.flatten() }, 400);
+    return c.json({ error: "Modèles de variante invalides", details: parsed.error.flatten() }, 400);
   }
 
   const seen = new Set<string>();
@@ -735,22 +735,22 @@ adminRoutes.post("/deliveries/:campaignId/:igUserId/follow-retry", async (c) => 
   const campaignId = c.req.param("campaignId");
   const igUserId = c.req.param("igUserId");
   if (!CAMPAIGN_ID_PATTERN.test(campaignId)) {
-    return c.json({ error: "Invalid campaign ID" }, 400);
+    return c.json({ error: "ID de campagne invalide" }, 400);
   }
   if (!validMetaId(igUserId)) {
-    return c.json({ error: "Invalid Instagram user ID" }, 400);
+    return c.json({ error: "ID d’utilisateur Instagram invalide" }, 400);
   }
 
   const repo = new Repository(c.env.DB);
   const campaign = await repo.findCampaignById(campaignId);
-  if (!campaign) return c.json({ error: "Campaign not found", campaignId }, 404);
-  if (!campaign.enabled) return c.json({ error: "Campaign is disabled", campaignId }, 409);
-  if (!campaign.followGateEnabled) return c.json({ error: "Campaign follow gate is not enabled", campaignId }, 409);
+  if (!campaign) return c.json({ error: "Campagne introuvable", campaignId }, 404);
+  if (!campaign.enabled) return c.json({ error: "La campagne est désactivée", campaignId }, 409);
+  if (!campaign.followGateEnabled) return c.json({ error: "La vérification d’abonnement n’est pas activée pour cette campagne", campaignId }, 409);
 
   const deliveryId = `${campaignId}:${igUserId}:final`;
   const requeued = await repo.requeueWaitingFollowDelivery(deliveryId);
   if (!requeued) {
-    return c.json({ error: "No waiting follow delivery found", campaignId, igUserId }, 409);
+    return c.json({ error: "Aucune livraison en attente d’abonnement n’a été trouvée", campaignId, igUserId }, 409);
   }
 
   await c.env.DELIVERY_QUEUE.send({
@@ -780,7 +780,7 @@ adminRoutes.get("/media", async (c) => {
 
   if (!response.ok) {
     return c.json(
-      { error: "Instagram media fetch failed", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
+      { error: "Impossible de récupérer les publications Instagram", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
       502
     );
   }
@@ -804,7 +804,7 @@ adminRoutes.get("/media", async (c) => {
 adminRoutes.get("/media/:mediaId/comments", async (c) => {
   const mediaId = c.req.param("mediaId");
   if (!validMetaId(mediaId)) {
-    return c.json({ error: "Invalid media ID" }, 400);
+    return c.json({ error: "ID de publication invalide" }, 400);
   }
 
   const { response, body } = await fetchInstagramJson([mediaId, "comments"], await adminInstagramAccessToken(c), {
@@ -814,7 +814,7 @@ adminRoutes.get("/media/:mediaId/comments", async (c) => {
 
   if (!response.ok) {
     return c.json(
-      { error: "Instagram comments fetch failed", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
+      { error: "Impossible de récupérer les commentaires Instagram", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
       502
     );
   }
@@ -841,7 +841,7 @@ adminRoutes.get("/subscription", async (c) => {
 
   if (!response.ok) {
     return c.json(
-      { error: "Instagram subscription fetch failed", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
+      { error: "Impossible de vérifier l’abonnement Instagram", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
       502
     );
   }
@@ -868,7 +868,7 @@ adminRoutes.post("/subscription", async (c) => {
   const parsed = subscriptionSchema.safeParse(rawBody.value);
 
   if (!parsed.success) {
-    return c.json({ error: "Invalid subscription fields", details: parsed.error.flatten() }, 400);
+    return c.json({ error: "Champs d’abonnement invalides", details: parsed.error.flatten() }, 400);
   }
 
   const fields = [...new Set(parsed.data.fields)];
@@ -880,7 +880,7 @@ adminRoutes.post("/subscription", async (c) => {
 
   if (!response.ok) {
     return c.json(
-      { error: "Instagram subscription update failed", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
+      { error: "Impossible de mettre à jour l’abonnement Instagram", upstreamStatus: response.status, upstreamError: sanitizedInstagramError(body) },
       502
     );
   }
@@ -895,18 +895,18 @@ adminRoutes.post("/campaigns", async (c) => {
   }
 
   if (!isJsonObject(body.value)) {
-    return c.json({ error: "Invalid campaign" }, 400);
+    return c.json({ error: "Campagne invalide" }, 400);
   }
 
   const writeMode = campaignWriteModeSchema.default("upsert").safeParse(body.value.writeMode);
   if (!writeMode.success) {
-    return c.json({ error: "Invalid campaign write mode" }, 400);
+    return c.json({ error: "Mode d’enregistrement de campagne invalide" }, 400);
   }
 
   const parsed = createCampaignSchema.safeParse(body.value);
 
   if (!parsed.success) {
-    return c.json({ error: "Invalid campaign", details: parsed.error.flatten() }, 400);
+    return c.json({ error: "Campagne invalide", details: parsed.error.flatten() }, 400);
   }
 
   const repo = new Repository(c.env.DB);
@@ -914,9 +914,9 @@ adminRoutes.post("/campaigns", async (c) => {
   if (writeMode.data === "create" && existing) {
     return c.json(
       {
-        error: "Campaign already exists",
+        error: "Cette campagne existe déjà",
         id: parsed.data.id,
-        details: { fieldErrors: { id: ["Campaign ID already exists"] } }
+        details: { fieldErrors: { id: ["Cet ID de campagne existe déjà"] } }
       },
       409
     );
@@ -924,9 +924,9 @@ adminRoutes.post("/campaigns", async (c) => {
   if (writeMode.data === "update" && !existing) {
     return c.json(
       {
-        error: "Campaign not found",
+        error: "Campagne introuvable",
         id: parsed.data.id,
-        details: { fieldErrors: { id: ["Campaign ID not found"] } }
+        details: { fieldErrors: { id: ["ID de campagne introuvable"] } }
       },
       404
     );
@@ -938,7 +938,7 @@ adminRoutes.post("/campaigns", async (c) => {
 adminRoutes.patch("/campaigns/:id", async (c) => {
   const id = c.req.param("id");
   if (!CAMPAIGN_ID_PATTERN.test(id)) {
-    return c.json({ error: "Invalid campaign ID" }, 400);
+    return c.json({ error: "ID de campagne invalide" }, 400);
   }
 
   const parsedBody = await parseJson(c);
@@ -949,13 +949,13 @@ adminRoutes.patch("/campaigns/:id", async (c) => {
   const body = isJsonObject(parsedBody.value) ? parsedBody.value : {};
 
   if (typeof body.enabled !== "boolean") {
-    return c.json({ error: "enabled boolean is required" }, 400);
+    return c.json({ error: "Le champ enabled doit être un booléen" }, 400);
   }
 
   const repo = new Repository(c.env.DB);
   const changed = await repo.setCampaignEnabled(id, body.enabled);
   if (!changed) {
-    return c.json({ error: "Campaign not found", id }, 404);
+    return c.json({ error: "Campagne introuvable", id }, 404);
   }
   return c.json({ ok: true, id, enabled: body.enabled });
 });
@@ -963,13 +963,13 @@ adminRoutes.patch("/campaigns/:id", async (c) => {
 adminRoutes.delete("/campaigns/:id", async (c) => {
   const id = c.req.param("id");
   if (!CAMPAIGN_ID_PATTERN.test(id)) {
-    return c.json({ error: "Invalid campaign ID" }, 400);
+    return c.json({ error: "ID de campagne invalide" }, 400);
   }
 
   const repo = new Repository(c.env.DB);
   const deleted = await repo.deleteCampaignCascade(id);
   if (deleted.campaign === 0) {
-    return c.json({ error: "Campaign not found", id, deleted }, 404);
+    return c.json({ error: "Campagne introuvable", id, deleted }, 404);
   }
   return c.json({ ok: true, id, deleted });
 });

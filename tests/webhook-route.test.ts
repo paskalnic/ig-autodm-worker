@@ -44,9 +44,9 @@ describe("Meta webhook routes", () => {
     );
 
     expect(verifyResponse.status).toBe(503);
-    await expect(verifyResponse.text()).resolves.toBe("Webhook is not configured");
+    await expect(verifyResponse.text()).resolves.toBe("Le webhook n’est pas configuré");
     expect(postResponse.status).toBe(503);
-    await expect(postResponse.text()).resolves.toBe("Webhook is not configured");
+    await expect(postResponse.text()).resolves.toBe("Le webhook n’est pas configuré");
   });
 
   it("rejects webhook posts with missing or invalid signatures before parsing JSON", async () => {
@@ -61,7 +61,7 @@ describe("Meta webhook routes", () => {
     );
 
     expect(response.status).toBe(401);
-    await expect(response.text()).resolves.toBe("Unauthorized");
+    await expect(response.text()).resolves.toBe("Non autorisé");
   });
 
   it("accepts webhook posts signed with the Instagram app secret fallback", async () => {
@@ -119,7 +119,7 @@ describe("Meta webhook routes", () => {
     );
 
     expect(response.status).toBe(400);
-    await expect(response.json()).resolves.toEqual({ error: "Invalid JSON body" });
+    await expect(response.json()).resolves.toEqual({ error: "Corps JSON invalide" });
   });
 
   it("rejects oversized webhook bodies before signature work", async () => {
@@ -134,7 +134,7 @@ describe("Meta webhook routes", () => {
     );
 
     expect(response.status).toBe(413);
-    await expect(response.text()).resolves.toBe("Payload Too Large");
+    await expect(response.text()).resolves.toBe("Charge utile trop volumineuse");
   });
 
   it("rejects oversized chunked webhook bodies that omit content-length", async () => {
@@ -160,7 +160,7 @@ describe("Meta webhook routes", () => {
     );
 
     expect(response.status).toBe(413);
-    await expect(response.text()).resolves.toBe("Payload Too Large");
+    await expect(response.text()).resolves.toBe("Charge utile trop volumineuse");
   });
 
   it("ignores signed webhook events for a different Instagram account", async () => {

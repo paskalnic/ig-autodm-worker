@@ -35,10 +35,10 @@ export async function decryptSecret(secret: { ciphertext: string; iv: string }, 
 
 async function deriveAesKey(keyMaterial: string, usages: KeyUsage[]): Promise<CryptoKey> {
   if (!keyMaterial.trim()) {
-    throw new Error("TOKEN_ENCRYPTION_KEY is required to decrypt stored Instagram tokens");
+    throw new Error("TOKEN_ENCRYPTION_KEY est requis pour déchiffrer les jetons Instagram enregistrés");
   }
   if (keyMaterial.trim().length < MIN_KEY_MATERIAL_CHARS) {
-    throw new Error("TOKEN_ENCRYPTION_KEY must be at least 32 characters");
+    throw new Error("TOKEN_ENCRYPTION_KEY doit contenir au moins 32 caractères");
   }
 
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(keyMaterial));

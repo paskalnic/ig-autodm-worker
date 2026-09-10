@@ -92,7 +92,7 @@ export async function refreshInstagramTokenIfDue(
 
   const result = await meta.refreshLongLivedToken(token);
   if (!result.ok) {
-    const message = redactSensitiveText(result.message) ?? "Instagram token refresh failed";
+    const message = redactSensitiveText(result.message) ?? "Échec du renouvellement du jeton Instagram";
     await repo.recordInstagramTokenRefreshError?.(message);
     await repo.insertOperationalEvent?.({
       eventType: "token_refresh_failed",

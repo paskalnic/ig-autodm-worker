@@ -300,7 +300,7 @@ describe("D1 integration", () => {
       await expect(db.get("SELECT status, error_code, error_message FROM deliveries WHERE id = 'prompt-test:user-1:final'")).resolves.toMatchObject({
         status: "failed",
         error_code: "send_status_unknown",
-        error_message: "Delivery was still processing after stale cutoff; manual reconciliation required"
+        error_message: "La livraison était encore en cours après le délai maximal ; une vérification manuelle est nécessaire"
       });
     } finally {
       await db.close();
@@ -396,7 +396,7 @@ describe("D1 integration", () => {
         { ...baseEnv(), DB: db.d1, DELIVERY_QUEUE: new RecordingQueue() } as never
       );
       expect(found.status).toBe(200);
-      await expect(found.text()).resolves.toContain("was received and processed");
+      await expect(found.text()).resolves.toContain("a bien été reçue et traitée");
 
       const missing = await app.request(
         "/data-deletion/status/22222222-2222-4222-8222-222222222222",

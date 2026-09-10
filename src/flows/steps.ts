@@ -107,7 +107,12 @@ function parseSentStepState(state: string): number | undefined {
 }
 
 function normalizeButtonText(value: string): string {
-  return value.trim().replace(/\s+/g, " ").toLowerCase();
+  return value
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 function isFollowRetryText(campaign: Campaign, normalizedText: string): boolean {
@@ -124,6 +129,12 @@ function isFollowRetryText(campaign: Campaign, normalizedText: string): boolean 
 }
 
 const FOLLOW_RETRY_TEXTS = new Set([
+  "pret",
+  "c est fait",
+  "fait",
+  "abonne",
+  "je suis abonne",
+  "je me suis abonne",
   "ready",
   "done",
   "done sir",

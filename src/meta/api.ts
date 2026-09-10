@@ -144,7 +144,7 @@ export class MetaApiClient {
     }
 
     const code = String(json.error?.code ?? response.status);
-    const message = redactSensitiveText(json.error?.message) ?? `Meta token refresh returned ${response.status}`;
+    const message = redactSensitiveText(json.error?.message) ?? `Le renouvellement du jeton Meta a renvoyé le statut ${response.status}`;
     return {
       ok: false,
       retryable: isRetryableMetaError(response.status, code, message),
@@ -161,7 +161,7 @@ export class MetaApiClient {
     const fallback = await this.fetchComments(mediaId, "id,text,username,timestamp", limit);
     if (fallback.ok) return fallback.comments;
 
-    throw new Error(fallback.message || primary.message || "Instagram comments fetch failed");
+    throw new Error(fallback.message || primary.message || "Impossible de récupérer les commentaires Instagram");
   }
 
   private async fetchComments(
@@ -183,7 +183,7 @@ export class MetaApiClient {
     };
 
     if (!response.ok || !Array.isArray(json.data)) {
-      return { ok: false, message: redactSensitiveText(json.error?.message) ?? `Meta API returned ${response.status}` };
+      return { ok: false, message: redactSensitiveText(json.error?.message) ?? `L’API Meta a renvoyé le statut ${response.status}` };
     }
 
     return { ok: true, comments: json.data.map(mapComment).filter((comment) => comment.id && comment.text) };
@@ -229,7 +229,7 @@ async function parseMetaSendResponse(response: Response): Promise<MetaSendResult
   }
 
   const code = String(json.error?.code ?? response.status);
-  const message = redactSensitiveText(json.error?.message) ?? `Meta API returned ${response.status}`;
+  const message = redactSensitiveText(json.error?.message) ?? `L’API Meta a renvoyé le statut ${response.status}`;
   return {
     ok: false,
     retryable: isRetryableMetaError(response.status, code, message),

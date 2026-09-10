@@ -166,7 +166,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:final",
         code: "automation_disabled",
-        message: "Automation is disabled by AUTOMATION_ENABLED"
+        message: "L’automatisation est désactivée par AUTOMATION_ENABLED"
       }
     ]);
     expect(repo.sent).toEqual([]);
@@ -217,7 +217,7 @@ describe("processDeliveryJob", () => {
     expect(meta.buttonMessages).toEqual([
       {
         igUserId: "user-1",
-        text: "Follow dulu akun ini, lalu tap KIRIM lagi. Kalau tombolnya gak muncul, balas READY.",
+        text: "Abonnez-vous à ce compte, puis appuyez de nouveau sur « KIRIM ». Si le bouton n’apparaît pas, répondez PRÊT.",
         buttonTitle: "KIRIM",
         buttonPayload: "campaign-1:confirm"
       }
@@ -245,7 +245,7 @@ describe("processDeliveryJob", () => {
     expect(meta.buttonMessages).toEqual([
       {
         igUserId: "user-1",
-        text: "Follow dulu akun ini, lalu tap KIRIM lagi. Kalau tombolnya gak muncul, balas READY.",
+        text: "Abonnez-vous à ce compte, puis appuyez de nouveau sur « KIRIM ». Si le bouton n’apparaît pas, répondez PRÊT.",
         buttonTitle: "KIRIM",
         buttonPayload: "campaign-1:confirm"
       }
@@ -334,7 +334,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:final",
         code: "follow_status_unknown",
-        message: "Could not verify follow status before final delivery"
+        message: "Impossible de vérifier l’abonnement avant la livraison finale"
       }
     ]);
     expect(repo.waiting).toEqual([]);
@@ -358,7 +358,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:final",
         code: "local_read_rate_limited",
-        message: "Local Meta read rate limit reached"
+        message: "Limite locale de lecture Meta atteinte"
       }
     ]);
     expect(repo.waiting).toEqual([]);
@@ -384,7 +384,7 @@ describe("processDeliveryJob", () => {
     expect(meta.buttonMessages).toEqual([
       {
         igUserId: "user-1",
-        text: "Follow dulu akun ini, lalu tap KIRIM lagi. Kalau tombolnya gak muncul, balas READY.",
+        text: "Abonnez-vous à ce compte, puis appuyez de nouveau sur « KIRIM ». Si le bouton n’apparaît pas, répondez PRÊT.",
         buttonTitle: "KIRIM",
         buttonPayload: "campaign-1:confirm"
       }
@@ -478,7 +478,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:final",
         code: "local_rate_limited",
-        message: "Local outbound Meta send rate limit reached"
+        message: "Limite locale d’envoi Meta atteinte"
       }
     ]);
     expect(repo.retryOptions).toEqual([{ countAttempt: false }]);
@@ -1059,7 +1059,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:opening_failure_reply",
         code: "local_rate_limited",
-        message: "Local outbound Meta send rate limit reached"
+        message: "Limite locale d’envoi Meta atteinte"
       }
     ]);
     expect(repo.sent).toEqual([]);
@@ -1199,7 +1199,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:comment_reply",
         code: "malformed_job",
-        message: "Comment reply delivery is missing commentId"
+        message: "La réponse au commentaire ne contient pas de commentId"
       }
     ]);
   });
@@ -1224,7 +1224,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:opening",
         code: "malformed_job",
-        message: "Opening delivery is missing commentId"
+        message: "La livraison du premier message ne contient pas de commentId"
       }
     ]);
   });
@@ -1249,7 +1249,7 @@ describe("processDeliveryJob", () => {
       {
         deliveryId: "campaign-1:user-1:unknown",
         code: "malformed_job",
-        message: "Unknown delivery type"
+        message: "Type de livraison inconnu"
       }
     ]);
   });

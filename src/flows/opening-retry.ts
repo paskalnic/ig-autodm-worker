@@ -43,6 +43,16 @@ export function isOpeningRetryComment(text: string): boolean {
     "did not get",
     "nothing received",
     "cant see",
-    "can t see"
+    "can t see",
+    "pas recu",
+    "rien recu",
+    "je n ai rien recu",
+    "j ai rien recu",
+    "message non recu",
+    "dm non recu",
+    "pas de dm",
+    "aucun dm",
+    "je ne vois pas le message",
+    "je ne trouve pas le message"
   ].some((phrase) => normalized.includes(phrase));
 }

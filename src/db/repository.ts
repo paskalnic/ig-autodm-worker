@@ -655,7 +655,7 @@ export class Repository {
         "failed",
         null,
         "retry_exhausted",
-        `Retry attempts exhausted after ${MAX_DELIVERY_ATTEMPTS} attempts; last error ${code}: ${message}`
+        `Nombre maximal de tentatives atteint après ${MAX_DELIVERY_ATTEMPTS} essais ; dernière erreur ${code} : ${message}`
       );
       return false;
     }
@@ -1226,7 +1226,7 @@ export class Repository {
         `UPDATE deliveries
         SET status = 'failed',
             error_code = 'retry_exhausted',
-            error_message = 'Retry attempts exhausted before stale recovery',
+            error_message = 'Nombre maximal de tentatives atteint avant la récupération des livraisons bloquées',
             updated_at = ?2
         WHERE rowid IN (
           SELECT deliveries.rowid
@@ -1256,7 +1256,7 @@ export class Repository {
         `UPDATE deliveries
         SET status = 'failed',
             error_code = 'send_status_unknown',
-            error_message = 'Delivery was still processing after stale cutoff; manual reconciliation required',
+            error_message = 'La livraison était encore en cours après le délai maximal ; une vérification manuelle est nécessaire',
             updated_at = ?2
         WHERE rowid IN (
           SELECT deliveries.rowid

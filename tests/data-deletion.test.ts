@@ -46,7 +46,7 @@ describe("Meta data deletion callback", () => {
 
     const status = await app.request(`/data-deletion/status/${body.confirmation_code}`, {}, { ...(env as Record<string, unknown>), DB: db } as never);
     expect(status.status).toBe(200);
-    await expect(status.text()).resolves.toContain("was received and processed");
+    await expect(status.text()).resolves.toContain("a bien été reçue et traitée");
   });
 
   it("returns 404 for unknown data deletion confirmation codes", async () => {
@@ -59,7 +59,7 @@ describe("Meta data deletion callback", () => {
     );
 
     expect(response.status).toBe(404);
-    await expect(response.text()).resolves.toContain("was not found");
+    await expect(response.text()).resolves.toContain("est introuvable");
   });
 
   it("rejects malformed deletion confirmation codes before querying D1", async () => {
@@ -76,7 +76,7 @@ describe("Meta data deletion callback", () => {
     );
 
     expect(response.status).toBe(404);
-    await expect(response.text()).resolves.toContain("was not found");
+    await expect(response.text()).resolves.toContain("est introuvable");
   });
 
   it("rejects invalid signed requests without deleting data", async () => {
@@ -93,7 +93,7 @@ describe("Meta data deletion callback", () => {
     );
 
     expect(response.status).toBe(400);
-    await expect(response.json()).resolves.toEqual({ error: "Invalid signed request" });
+    await expect(response.json()).resolves.toEqual({ error: "Requête signée invalide" });
     expect(db.deletes).toEqual([]);
     expect(db.events).toEqual([]);
   });
@@ -116,7 +116,7 @@ describe("Meta data deletion callback", () => {
     );
 
     expect(response.status).toBe(400);
-    await expect(response.json()).resolves.toEqual({ error: "Invalid signed request" });
+    await expect(response.json()).resolves.toEqual({ error: "Requête signée invalide" });
     expect(db.deletes).toEqual([]);
     expect(db.events).toEqual([]);
   });
@@ -220,7 +220,7 @@ describe("Meta data deletion callback", () => {
     );
 
     expect(response.status).toBe(409);
-    await expect(response.json()).resolves.toEqual({ error: "Data deletion request is already processing" });
+    await expect(response.json()).resolves.toEqual({ error: "La demande de suppression est déjà en cours de traitement" });
     expect(db.deletes).toEqual([]);
     expect(db.events).toEqual([]);
   });

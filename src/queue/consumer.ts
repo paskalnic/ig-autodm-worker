@@ -44,7 +44,7 @@ export async function processDeliveryBatch(
       await repo.markDeliveryFailed(
         message.body.deliveryId,
         "automation_disabled",
-        "Automation is disabled by AUTOMATION_ENABLED"
+        "L’automatisation est désactivée par AUTOMATION_ENABLED"
       );
       message.ack();
     }
@@ -76,7 +76,7 @@ export async function processDeliveryJob(
   queue?: DeliveryQueue
 ): Promise<DeliveryDisposition> {
   if (!automationEnabled) {
-    await repo.markDeliveryFailed(job.deliveryId, "automation_disabled", "Automation is disabled by AUTOMATION_ENABLED");
+    await repo.markDeliveryFailed(job.deliveryId, "automation_disabled", "L’automatisation est désactivée par AUTOMATION_ENABLED");
     return "ack";
   }
 
@@ -86,7 +86,7 @@ export async function processDeliveryJob(
 
   if (job.deliveryType === "opening") {
     if (!job.commentId) {
-      await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "Opening delivery is missing commentId");
+      await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "La livraison du premier message ne contient pas de commentId");
       return "ack";
     }
     const commentId = job.commentId;
@@ -100,7 +100,7 @@ export async function processDeliveryJob(
       `${job.campaignId}:${job.igUserId}:${commentId}:opening`
     );
     if (!openingText) {
-      await repo.markDeliveryFailed(job.deliveryId, "malformed_campaign", "Opening delivery text is missing");
+      await repo.markDeliveryFailed(job.deliveryId, "malformed_campaign", "Le texte du premier message est manquant");
       return "ack";
     }
     const result = await runRetryableMetaCall(repo, job, () => meta.sendOpening(commentId, campaign, openingText));
@@ -110,7 +110,7 @@ export async function processDeliveryJob(
 
   if (job.deliveryType === "comment_reply" || job.deliveryType === "opening_failure_reply") {
     if (!job.commentId) {
-      await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "Comment reply delivery is missing commentId");
+      await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "La réponse au commentaire ne contient pas de commentId");
       return "ack";
     }
     const commentId = job.commentId;
@@ -128,12 +128,12 @@ export async function processDeliveryJob(
   if (job.deliveryType === "button_step") {
     const stepIndex = job.stepIndex;
     if (typeof stepIndex !== "number" || !Number.isInteger(stepIndex) || stepIndex < 0) {
-      await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "Button step delivery is missing stepIndex");
+      await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "L’étape de bouton ne contient pas de stepIndex");
       return "ack";
     }
     const step = campaign.dmSteps[stepIndex];
     if (!step) {
-      await repo.markDeliveryFailed(job.deliveryId, "malformed_campaign", "Button step is missing from campaign");
+      await repo.markDeliveryFailed(job.deliveryId, "malformed_campaign", "L’étape de bouton est absente de la campagne");
       return "ack";
     }
     const claim = await claimDelivery(repo, job.deliveryId);
@@ -146,7 +146,7 @@ export async function processDeliveryJob(
       `${job.campaignId}:${job.igUserId}:button_step:${stepIndex + 1}`
     );
     if (!stepText) {
-      await repo.markDeliveryFailed(job.deliveryId, "malformed_campaign", "Button step text is missing");
+      await repo.markDeliveryFailed(job.deliveryId, "malformed_campaign", "Le texte de l’étape de bouton est manquant");
       return "ack";
     }
     const result = await runRetryableMetaCall(repo, job, () =>
@@ -157,7 +157,7 @@ export async function processDeliveryJob(
   }
 
   if (job.deliveryType !== "final") {
-    await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "Unknown delivery type");
+    await repo.markDeliveryFailed(job.deliveryId, "malformed_job", "Type de livraison inconnu");
     return "ack";
   }
 
@@ -171,7 +171,7 @@ export async function processDeliveryJob(
         repo,
         job.deliveryId,
         "local_read_rate_limited",
-        "Local Meta read rate limit reached",
+        "Limite locale de lecture Meta atteinte",
         { countAttempt: false }
       );
     }
@@ -184,7 +184,7 @@ export async function processDeliveryJob(
         repo,
         job.deliveryId,
         "follow_status_unknown",
-        "Could not verify follow status before final delivery",
+        "Impossible de vérifier l’abonnement avant la livraison finale",
         { countAttempt: false }
       );
     }
@@ -228,8 +228,8 @@ function followGateInstruction(buttonTitle: string, customText?: string | null):
   const normalizedCustom = customText?.trim();
   if (normalizedCustom) return normalizedCustom;
 
-  const title = buttonTitle.trim() || "tombol tadi";
-  return `Follow dulu akun ini, lalu tap ${title} lagi. Kalau tombolnya gak muncul, balas READY.`;
+  const title = buttonTitle.trim() || "le bouton précédent";
+  return `Abonnez-vous à ce compte, puis appuyez de nouveau sur « ${title} ». Si le bouton n’apparaît pas, répondez PRÊT.`;
 }
 
 function followGateButtonTitle(campaign: { buttonTitle: string; followGateButtonTitle?: string | null }): string {
@@ -258,7 +258,7 @@ async function ensureOutboundSendAllowed(
     repo,
     job.deliveryId,
     "local_rate_limited",
-    "Local outbound Meta send rate limit reached",
+    "Limite locale d’envoi Meta atteinte",
     { countAttempt: false }
   );
 }
@@ -322,7 +322,7 @@ function isDeliveryDisposition(value: unknown): value is DeliveryDisposition {
 
 function unexpectedDeliveryErrorMessage(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
-  return `Unexpected delivery error: ${redactSensitiveText(message)}`;
+  return `Erreur de livraison inattendue : ${redactSensitiveText(message)}`;
 }
 
 async function handleOpeningSendResult(

@@ -73,7 +73,7 @@ function htmlResponse(title: string, body: string, status = 200): Response {
 }
 
 const legalPage = (title: string, body: string, nonce: string) => `<!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -91,64 +91,64 @@ const legalPage = (title: string, body: string, nonce: string) => `<!doctype htm
   </body>
 </html>`;
 
-const privacyBody = `<h1>Privacy Policy</h1>
-      <p>IG AutoDM Worker is a self-hosted Instagram automation tool used by the account owner to respond to Instagram comments and direct messages.</p>
-      <h2>Data processed</h2>
-      <p>The tool processes Instagram account identifiers, usernames when provided by Instagram, comment text, message text, postback payloads, campaign rules, and delivery state needed to operate automated replies.</p>
-      <h2>Purpose</h2>
-      <p>Data is used only to match comments or messages to configured campaigns, send the requested Instagram reply, prevent duplicate deliveries, and troubleshoot delivery issues.</p>
-      <h2>Sharing and retention</h2>
-      <p>Data is stored in the owner's Cloudflare account and is not sold or shared with third parties except infrastructure providers required to run the service. Operational records are retained only as long as needed for the automation and support.</p>
+const privacyBody = `<h1>Politique de confidentialité</h1>
+      <p>IG AutoDM Worker est un outil d’automatisation Instagram auto-hébergé. Il permet au propriétaire du compte de répondre aux commentaires et aux messages privés Instagram.</p>
+      <h2>Données traitées</h2>
+      <p>Le service traite les identifiants de comptes Instagram, les noms d’utilisateur transmis par Instagram, le contenu des commentaires et des messages, les actions sur les boutons, les règles des campagnes et les états de livraison nécessaires aux réponses automatiques.</p>
+      <h2>Finalité</h2>
+      <p>Ces données servent uniquement à associer les commentaires ou messages aux campagnes configurées, envoyer la réponse Instagram demandée, éviter les doublons et diagnostiquer les problèmes de livraison.</p>
+      <h2>Partage et conservation</h2>
+      <p>Les données sont stockées dans le compte Cloudflare du propriétaire. Elles ne sont ni vendues ni partagées avec des tiers, à l’exception des prestataires techniques indispensables au fonctionnement du service. Les données opérationnelles sont conservées uniquement pendant la durée nécessaire à l’automatisation et à l’assistance.</p>
       <h2>Contact</h2>
-      <p>For access or deletion requests, contact the owner of the Instagram account that connected this tool.</p>`;
+      <p>Pour demander l’accès à vos données ou leur suppression, contactez le propriétaire du compte Instagram ayant connecté cet outil.</p>`;
 
-const termsBody = `<h1>Terms of Service</h1>
-      <p>IG AutoDM Worker is operated as a self-hosted automation tool for the Instagram account owner who connects it.</p>
-      <h2>Use of the tool</h2>
-      <p>The account owner is responsible for configuring campaigns, reply content, and compliance with Instagram and Meta platform policies.</p>
-      <h2>Availability</h2>
-      <p>The tool is provided for internal automation use without warranties. Access can be revoked by removing the connected app from Instagram settings or rotating stored access tokens.</p>`;
+const termsBody = `<h1>Conditions d’utilisation</h1>
+      <p>IG AutoDM Worker est un outil d’automatisation auto-hébergé destiné au propriétaire du compte Instagram qui le connecte.</p>
+      <h2>Utilisation du service</h2>
+      <p>Le propriétaire du compte est responsable de la configuration des campagnes, du contenu des réponses et du respect des règles des plateformes Instagram et Meta.</p>
+      <h2>Disponibilité</h2>
+      <p>Le service est fourni sans garantie pour un usage interne d’automatisation. L’accès peut être révoqué en supprimant l’application connectée dans les paramètres Instagram ou en renouvelant les jetons d’accès enregistrés.</p>`;
 
-const deletionBody = `<h1>Data Deletion Instructions</h1>
-      <p>To remove IG AutoDM Worker access, open Instagram settings, go to Website permissions, then Apps and websites, and remove IG AutoDM Worker app.</p>
-      <p>To request deletion of stored automation data, contact the owner of the Instagram account that connected this tool. The owner can remove campaign delivery records from the Cloudflare D1 database and rotate the Instagram access token.</p>`;
+const deletionBody = `<h1>Suppression des données</h1>
+      <p>Pour retirer l’accès à IG AutoDM Worker, ouvrez les paramètres Instagram, accédez à Autorisations du site web, puis Applications et sites web, et supprimez l’application IG AutoDM Worker.</p>
+      <p>Pour demander la suppression des données d’automatisation enregistrées, contactez le propriétaire du compte Instagram ayant connecté cet outil. Il pourra supprimer l’historique des campagnes de la base Cloudflare D1 et renouveler le jeton d’accès Instagram.</p>`;
 
 app.get("/", () =>
   htmlResponse(
     "IG AutoDM Worker",
     `<h1>IG AutoDM Worker</h1>
-      <p>Self-hosted Instagram automation service for comment and direct-message workflows.</p>
-      <p><a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a> | <a href="/data-deletion">Data Deletion Instructions</a></p>`
+      <p>Service d’automatisation Instagram auto-hébergé pour les commentaires et les messages privés.</p>
+      <p><a href="/privacy">Politique de confidentialité</a> | <a href="/terms">Conditions d’utilisation</a> | <a href="/data-deletion">Suppression des données</a></p>`
   )
 );
 
-app.get("/privacy", () => htmlResponse("Privacy Policy", privacyBody));
+app.get("/privacy", () => htmlResponse("Politique de confidentialité", privacyBody));
 
-app.get("/terms", () => htmlResponse("Terms of Service", termsBody));
+app.get("/terms", () => htmlResponse("Conditions d’utilisation", termsBody));
 
-const dataDeletionHandler = () => htmlResponse("Data Deletion Instructions", deletionBody);
+const dataDeletionHandler = () => htmlResponse("Suppression des données", deletionBody);
 
 app.get("/data-deletion", dataDeletionHandler);
 app.get("/data_deletion", dataDeletionHandler);
 
 app.post("/data-deletion", async (c) => {
   if (!metaAppSecretConfigured(c.env.META_APP_SECRET)) {
-    return c.json({ error: "Data deletion callback is not configured" }, 503);
+    return c.json({ error: "Le traitement des demandes de suppression n’est pas configuré" }, 503);
   }
 
   const rawBody = await readLimitedBody(c.req.raw, MAX_DATA_DELETION_BODY_BYTES);
-  if (!rawBody.ok) return c.json({ error: "Request body too large" }, 413);
+  if (!rawBody.ok) return c.json({ error: "Le corps de la requête est trop volumineux" }, 413);
 
   const form = new URLSearchParams(new TextDecoder().decode(rawBody.bytes));
   const signedRequestValue = form.get("signed_request");
   const signedRequest = await parseMetaSignedRequest(signedRequestValue, c.env.META_APP_SECRET);
   if (!signedRequest.ok) {
-    return c.json({ error: "Invalid signed request" }, 400);
+    return c.json({ error: "Requête signée invalide" }, 400);
   }
 
   const userId = typeof signedRequest.payload.user_id === "string" ? signedRequest.payload.user_id : "";
   if (!userId) {
-    return c.json({ error: "Signed request does not contain a user_id" }, 400);
+    return c.json({ error: "La requête signée ne contient pas de user_id" }, 400);
   }
 
   const repo = new Repository(c.env.DB);
@@ -156,12 +156,12 @@ app.post("/data-deletion", async (c) => {
   const claim = await repo.claimDataDeletionRequest(replayHash);
   if (claim.status === "completed") {
     if (!claim.confirmationCode) {
-      return c.json({ error: "Data deletion request was already processed" }, 409);
+      return c.json({ error: "La demande de suppression a déjà été traitée" }, 409);
     }
     return dataDeletionJson(c, claim.confirmationCode);
   }
   if (claim.status === "processing") {
-    return c.json({ error: "Data deletion request is already processing" }, 409);
+    return c.json({ error: "La demande de suppression est déjà en cours de traitement" }, 409);
   }
 
   try {
@@ -197,10 +197,10 @@ app.get("/data-deletion/status/:code", async (c) => {
 
 function dataDeletionStatusResponse(found: boolean): Response {
   return htmlResponse(
-    found ? "Data Deletion Status" : "Data Deletion Status Not Found",
+    found ? "État de la suppression des données" : "Demande de suppression introuvable",
     found
-      ? `<h1>Data Deletion Status</h1><p>The deletion request was received and processed by the self-hosted automation service.</p>`
-      : `<h1>Data Deletion Status</h1><p>The deletion request was not found.</p>`,
+      ? `<h1>État de la suppression des données</h1><p>La demande de suppression a bien été reçue et traitée par le service d’automatisation.</p>`
+      : `<h1>État de la suppression des données</h1><p>Cette demande de suppression est introuvable.</p>`,
     found ? 200 : 404
   );
 }
@@ -213,7 +213,7 @@ function dataDeletionJson(c: { req: { url: string }; json: (data: unknown) => Re
 }
 
 app.get("/webhooks/meta", async (c) => {
-  if (!metaWebhookConfigured(c.env)) return c.text("Webhook is not configured", 503);
+  if (!metaWebhookConfigured(c.env)) return c.text("Le webhook n’est pas configuré", 503);
 
   const mode = c.req.query("hub.mode");
   const token = c.req.query("hub.verify_token");
@@ -223,26 +223,26 @@ app.get("/webhooks/meta", async (c) => {
     return c.text(challenge);
   }
 
-  return c.text("Forbidden", 403);
+  return c.text("Accès interdit", 403);
 });
 
 app.post("/webhooks/meta", async (c) => {
-  if (!metaWebhookConfigured(c.env)) return c.text("Webhook is not configured", 503);
+  if (!metaWebhookConfigured(c.env)) return c.text("Le webhook n’est pas configuré", 503);
 
   const rawBody = await readLimitedBody(c.req.raw, MAX_WEBHOOK_BODY_BYTES);
-  if (!rawBody.ok) return c.text("Payload Too Large", 413);
+  if (!rawBody.ok) return c.text("Charge utile trop volumineuse", 413);
 
   const signature = c.req.header("X-Hub-Signature-256") ?? null;
   const valid = await verifyAnyMetaSignature(rawBody.bytes, signature, metaWebhookSecrets(c.env));
 
-  if (!valid) return c.text("Unauthorized", 401);
+  if (!valid) return c.text("Non autorisé", 401);
 
   const rawText = new TextDecoder().decode(rawBody.bytes);
   let payload: unknown;
   try {
     payload = JSON.parse(rawText) as unknown;
   } catch {
-    return c.json({ error: "Invalid JSON body" }, 400);
+    return c.json({ error: "Corps JSON invalide" }, 400);
   }
 
   const events = normalizeMetaWebhook(payload, c.env.INSTAGRAM_ACCOUNT_ID, messagingAccountIds(c.env));

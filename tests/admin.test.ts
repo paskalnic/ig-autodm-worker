@@ -31,16 +31,16 @@ describe("admin routes", () => {
     await expect(root.text()).resolves.toContain("IG AutoDM Worker");
 
     expect(privacy.status).toBe(200);
-    await expect(privacy.text()).resolves.toContain("Privacy Policy");
+    await expect(privacy.text()).resolves.toContain("Politique de confidentialité");
 
     expect(terms.status).toBe(200);
-    await expect(terms.text()).resolves.toContain("Terms of Service");
+    await expect(terms.text()).resolves.toContain("Conditions d’utilisation");
 
     expect(deletion.status).toBe(200);
-    await expect(deletion.text()).resolves.toContain("Data Deletion Instructions");
+    await expect(deletion.text()).resolves.toContain("Suppression des données");
 
     expect(deletionAlias.status).toBe(200);
-    await expect(deletionAlias.text()).resolves.toContain("Data Deletion Instructions");
+    await expect(deletionAlias.text()).resolves.toContain("Suppression des données");
   });
 
   it("serves the browser admin UI shell without embedding secret values", async () => {
@@ -57,24 +57,24 @@ describe("admin routes", () => {
     const html = await response.text();
     expect(html).toContain("IG AutoDM Worker");
     expect(html).toContain("data-admin-ui");
-    expect(html).toContain("Login dashboard");
-    expect(html).toContain("Masuk ke dashboard");
-    expect(html).toContain("Security key");
+    expect(html).toContain("Connexion");
+    expect(html).toContain("Accéder au tableau de bord");
+    expect(html).toContain("Clé de sécurité");
     expect(html).toContain("/admin/session");
     expect(html).toContain("/admin/bootstrap");
-    expect(html).toContain("Simpan Draft");
-    expect(html).toContain("Aktifkan campaign");
-    expect(html).toContain("Hapus campaign");
+    expect(html).toContain("Enregistrer le brouillon");
+    expect(html).toContain("Activer la campagne");
+    expect(html).toContain("Supprimer");
     expect(html).toContain("/admin/campaigns/");
-    expect(html).toContain("Preview follower");
-    expect(html).toContain("langkah DM tambahan");
-    expect(html).toContain("Wajib follow sebelum prompt akhir");
-    expect(html).toContain("Teks saat belum follow");
+    expect(html).toContain("Aperçu côté abonné");
+    expect(html).toContain("messages intermédiaires");
+    expect(html).toContain("Exiger un abonnement avant le contenu final");
+    expect(html).toContain("Message si l’utilisateur n’est pas abonné");
     expect(html).toContain("followGateEnabled");
     expect(html).toContain("followGateText");
     expect(html).toContain("followGateButtonTitle");
     expect(html).toContain("openingFailureReplyText");
-    expect(html).toContain("Follow gate");
+    expect(html).toContain("Exiger un abonnement");
     expect(html).not.toContain("tanpa edit database manual");
     expect(html).not.toContain("Browser cuma nyimpen session sementara");
     expect(html).not.toContain("secret values embedded");
@@ -108,7 +108,7 @@ describe("admin routes", () => {
     const response = await app.request("/admin/campaigns", {}, env);
 
     expect(response.status).toBe(401);
-    await expect(response.json()).resolves.toEqual({ error: "Unauthorized" });
+    await expect(response.json()).resolves.toEqual({ error: "Non autorisé" });
   });
 
   it("fails closed when admin storage is missing", async () => {
@@ -123,7 +123,7 @@ describe("admin routes", () => {
     );
 
     expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toEqual({ error: "Admin storage is not configured" });
+    await expect(response.json()).resolves.toEqual({ error: "Le stockage administrateur n’est pas configuré" });
   });
 
   it("exchanges the admin login for an HttpOnly session plus CSRF token", async () => {
@@ -264,7 +264,7 @@ describe("admin routes", () => {
     );
 
     expect(campaigns.status).toBe(401);
-    await expect(campaigns.json()).resolves.toEqual({ error: "Unauthorized" });
+    await expect(campaigns.json()).resolves.toEqual({ error: "Non autorisé" });
   });
 
   it("resumes a browser admin session after page refresh and rotates CSRF", async () => {
@@ -378,7 +378,7 @@ describe("admin routes", () => {
     );
 
     expect(response.status).toBe(401);
-    await expect(response.json()).resolves.toEqual({ error: "Unauthorized" });
+    await expect(response.json()).resolves.toEqual({ error: "Non autorisé" });
     expect(db.sessions.size).toBe(0);
   });
 
@@ -398,7 +398,7 @@ describe("admin routes", () => {
     );
 
     expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toEqual({ error: "Admin login is not configured" });
+    await expect(response.json()).resolves.toEqual({ error: "La connexion administrateur n’est pas configurée" });
   });
 
   it("fails closed when the admin token secret is missing or unsafe", async () => {
@@ -414,7 +414,7 @@ describe("admin routes", () => {
       );
 
       expect(response.status).toBe(503);
-      await expect(response.json()).resolves.toEqual({ error: "Admin authentication is not configured" });
+      await expect(response.json()).resolves.toEqual({ error: "L’authentification administrateur n’est pas configurée" });
     }
   });
 
@@ -444,7 +444,7 @@ describe("admin routes", () => {
 
     expect(response.status).toBe(400);
     const body = (await response.json()) as { error: string };
-    expect(body.error).toBe("Invalid campaign");
+    expect(body.error).toBe("Campagne invalide");
   });
 
   it("rejects oversized admin JSON before parsing", async () => {
@@ -462,7 +462,7 @@ describe("admin routes", () => {
     );
 
     expect(response.status).toBe(413);
-    await expect(response.json()).resolves.toEqual({ error: "Request body too large" });
+    await expect(response.json()).resolves.toEqual({ error: "Le corps de la requête est trop volumineux" });
   });
 
   it("lists recent Instagram media without exposing the access token", async () => {
@@ -531,7 +531,7 @@ describe("admin routes", () => {
 
     expect(response.status).toBe(502);
     await expect(response.json()).resolves.toEqual({
-      error: "Instagram media fetch failed",
+      error: "Impossible de récupérer les publications Instagram",
       upstreamStatus: 400,
       upstreamError: {
         code: 190,
@@ -716,7 +716,7 @@ describe("admin routes", () => {
 
     expect(duplicate.status).toBe(409);
     await expect(duplicate.json()).resolves.toMatchObject({
-      error: "Campaign already exists",
+      error: "Cette campagne existe déjà",
       id: "campaign-variants"
     });
   });
@@ -749,7 +749,7 @@ describe("admin routes", () => {
     );
 
     expect(response.status).toBe(404);
-    await expect(response.json()).resolves.toMatchObject({ error: "Campaign not found" });
+    await expect(response.json()).resolves.toMatchObject({ error: "Campagne introuvable" });
   });
 
   it("stores reusable message variant templates", async () => {
@@ -890,7 +890,7 @@ describe("admin routes", () => {
 
     expect(response.status).toBe(400);
     expect(fetchMock).not.toHaveBeenCalled();
-    await expect(response.json()).resolves.toEqual({ error: "Invalid media ID" });
+    await expect(response.json()).resolves.toEqual({ error: "ID de publication invalide" });
   });
 
   it("checks Instagram webhook subscription without exposing access tokens", async () => {
@@ -1013,7 +1013,7 @@ describe("admin routes", () => {
 
     expect(response.status).toBe(409);
     await expect(response.json()).resolves.toMatchObject({
-      error: "No waiting follow delivery found",
+      error: "Aucune livraison en attente d’abonnement n’a été trouvée",
       campaignId: "campaign-1",
       igUserId: "user-1"
     });
@@ -1093,7 +1093,7 @@ describe("admin routes", () => {
     );
 
     expect(response.status).toBe(400);
-    await expect(response.json()).resolves.toEqual({ error: "Invalid JSON body" });
+    await expect(response.json()).resolves.toEqual({ error: "Corps JSON invalide" });
   });
 
   it("sets no-store security headers on admin API responses", async () => {
@@ -1127,7 +1127,7 @@ describe("admin routes", () => {
 
     expect(response.status).toBe(429);
     const body = (await response.json()) as { error: string; resetAt: string };
-    expect(body.error).toBe("Too many failed admin attempts");
+    expect(body.error).toBe("Trop de tentatives d’administration ont échoué");
     expect(body.resetAt).toMatch(/Z$/);
     expect(db.auditInserts).toHaveLength(31);
     expect(db.auditInserts.map((entry) => entry.action)).not.toContain("rate_limited");
@@ -1196,7 +1196,7 @@ describe("admin routes", () => {
     );
     expect(deletion.status).toBe(404);
     await expect(deletion.json()).resolves.toMatchObject({
-      error: "Campaign not found",
+      error: "Campagne introuvable",
       deleted: { campaign: 0 }
     });
   });

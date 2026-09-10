@@ -15,7 +15,7 @@ describe("secret box", () => {
 
   it("rejects weak token encryption keys", async () => {
     await expect(encryptSecret("ig-token-secret", "short")).rejects.toThrow(
-      "TOKEN_ENCRYPTION_KEY must be at least 32 characters"
+      "TOKEN_ENCRYPTION_KEY doit contenir au moins 32 caractères"
     );
   });
 });

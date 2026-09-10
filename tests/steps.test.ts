@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 import type { Campaign } from "../src/db/repository";
-import { resolvePayloadAdvance, resolveTextAdvance } from "../src/flows/steps";
+import {
+  openingButtonPayload,
+  parseStepDeliveryType,
+  resolvePayloadAdvance,
+  resolveTextAdvance,
+  sentStepState,
+  stepButtonPayload,
+  stepDeliveryType,
+  stepPayload
+} from "../src/flows/steps";
 
 const campaign: Campaign = {
   id: "campaign-1",
@@ -21,6 +30,27 @@ const campaign: Campaign = {
 };
 
 describe("flow step resolver", () => {
+  it("builds step payloads, delivery types, and button progression", () => {
+    const stepped = {
+      ...campaign,
+      dmSteps: [
+        { text: "Step one", textVariants: ["Step one"], buttonTitle: "NEXT" },
+        { text: "Step two", textVariants: ["Step two"], buttonTitle: "DONE" }
+      ]
+    };
+
+    expect(stepPayload(campaign.id, 0)).toBe("campaign-1:step:1");
+    expect(openingButtonPayload(campaign)).toBe(campaign.buttonPayload);
+    expect(openingButtonPayload(stepped)).toBe("campaign-1:step:1");
+    expect(stepButtonPayload(stepped, 0)).toBe("campaign-1:step:2");
+    expect(stepButtonPayload(stepped, 1)).toBe(campaign.buttonPayload);
+    expect(stepDeliveryType(1)).toBe("button_step:2");
+    expect(sentStepState(1)).toBe("button_step:2");
+    expect(parseStepDeliveryType("button_step:2")).toBe(1);
+    expect(parseStepDeliveryType("button_step:0")).toBeUndefined();
+    expect(parseStepDeliveryType("opening")).toBeUndefined();
+  });
+
   it("advances to final when the original button title is typed after the opening", () => {
     expect(resolveTextAdvance(campaign, "commented", "send it")).toEqual({ type: "final" });
   });
@@ -72,5 +102,26 @@ describe("flow step resolver", () => {
     expect(resolveTextAdvance(stepped, "button_step:2", "DONE")).toEqual({ type: "final" });
     expect(resolveTextAdvance(stepped, "button_step:1", "SEND IT")).toBeNull();
     expect(resolvePayloadAdvance(stepped, "commented", "campaign-1:confirm")).toBeNull();
+    expect(resolvePayloadAdvance(stepped, "commented", "other:step:1")).toBeNull();
+    expect(resolvePayloadAdvance(stepped, "commented", "campaign-1:step:3")).toBeNull();
+    expect(resolvePayloadAdvance(stepped, "button_step:1", "campaign-1:step:1")).toBeNull();
+    expect(resolvePayloadAdvance(stepped, "button_step:1", "campaign-1:step:2")).toEqual({
+      type: "step",
+      stepIndex: 1
+    });
+    expect(resolvePayloadAdvance(stepped, "button_step:2", "campaign-1:confirm")).toEqual({ type: "final" });
+  });
+
+  it("rejects empty, malformed, stale, and mismatched text advances", () => {
+    const stepped = {
+      ...campaign,
+      dmSteps: [{ text: "Step one", textVariants: ["Step one"], buttonTitle: "NEXT" }]
+    };
+
+    expect(resolveTextAdvance(campaign, "commented", "   ")).toBeNull();
+    expect(resolveTextAdvance(stepped, "unknown", "NEXT")).toBeNull();
+    expect(resolveTextAdvance(stepped, "button_step:0", "NEXT")).toBeNull();
+    expect(resolveTextAdvance(stepped, "button_step:2", "NEXT")).toBeNull();
+    expect(resolveTextAdvance(stepped, "button_step:1", "WRONG")).toBeNull();
   });
 });

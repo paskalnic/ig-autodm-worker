@@ -2,6 +2,12 @@ import { describe, expect, it } from "vitest";
 import { commentMatchesKeyword } from "../src/flows/keyword";
 
 describe("commentMatchesKeyword", () => {
+  it("rejects empty normalized input and oversized fuzzy phrases", () => {
+    expect(commentMatchesKeyword("PROMPT", "---")).toBe(false);
+    expect(commentMatchesKeyword("---", "PROMPT")).toBe(false);
+    expect(commentMatchesKeyword("one two", "one two three four five six seven")).toBe(false);
+  });
+
   it("matches exact keywords without caring about case", () => {
     expect(commentMatchesKeyword("pROMPT bang", "PROMPT")).toBe(true);
     expect(commentMatchesKeyword("mau Blue Green dong", "Blue Green")).toBe(true);
@@ -36,5 +42,7 @@ describe("commentMatchesKeyword", () => {
   it("does not match unrelated words or weak common words from a phrase", () => {
     expect(commentMatchesKeyword("merah aja", "Blue Green")).toBe(false);
     expect(commentMatchesKeyword("the dong", "The Green")).toBe(false);
+    expect(commentMatchesKeyword("ga", "go")).toBe(false);
+    expect(commentMatchesKeyword("zzzzzzzz", "abc")).toBe(false);
   });
 });

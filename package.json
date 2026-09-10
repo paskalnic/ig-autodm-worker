@@ -41,20 +41,22 @@
     "self-hosted"
   ],
   "dependencies": {
-    "hono": "^4.12.21",
-    "zod": "^4.4.3"
+    "hono": "^4.13.7",
+    "zod": "^4.6.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260521.1",
-    "@vitest/coverage-v8": "^3.2.6",
-    "miniflare": "4.20260520.0",
+    "@cloudflare/workers-types": "^5.20260908.1",
+    "@vitest/coverage-v8": "^4.1.11",
+    "miniflare": "^4.20260730.0",
     "typescript": "^6.0.3",
-    "vitest": "^3.2.6",
-    "wrangler": "^4.93.1"
+    "vitest": "^4.1.11",
+    "wrangler": "^4.130.0"
   },
   "overrides": {
     "miniflare": {
-      "ws": "8.20.1"
+      "sharp": "0.35.4",
+      "undici": "7.29.0",
+      "ws": "8.21.3"
     }
   }
 }

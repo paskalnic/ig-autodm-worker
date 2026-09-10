@@ -2,6 +2,12 @@ import { describe, expect, it } from "vitest";
 import { normalizeMetaWebhook } from "../src/meta/webhook";
 
 describe("normalizeMetaWebhook", () => {
+  it("rejects non-Instagram payloads and tolerates malformed collections", () => {
+    expect(normalizeMetaWebhook({ object: "page", entry: [] }, "ig-account-id")).toEqual([]);
+    expect(normalizeMetaWebhook({ object: "instagram", entry: "invalid" }, "ig-account-id")).toEqual([]);
+    expect(normalizeMetaWebhook(null)).toEqual([]);
+  });
+
   it("normalizes a comment webhook", () => {
     const events = normalizeMetaWebhook(
       {
@@ -303,5 +309,117 @@ describe("normalizeMetaWebhook", () => {
     expect(events[0]?.eventId).toBe("message:user-1:4");
     expect(events[0]?.eventId).not.toContain("READY");
     expect(events[0]?.eventId).not.toContain("private");
+  });
+
+  it("drops incomplete and unrelated comment or messaging events", () => {
+    const events = normalizeMetaWebhook({
+      object: "instagram",
+      entry: [
+        {
+          id: "ig-account-id",
+          changes: [
+            { field: "likes", value: {} },
+            { field: "comments", value: { id: "", media: { id: "media-1" }, from: { id: "user-1" } } }
+          ],
+          messaging: [
+            { sender: {}, timestamp: 1, message: { text: "ignored" } },
+            { sender: { id: "user-1" }, timestamp: "", message: { text: "ignored" } },
+            { sender: { id: "user-1" }, timestamp: 2, message: {} }
+          ]
+        }
+      ]
+    });
+
+    expect(events).toEqual([]);
+  });
+
+  it("normalizes unscoped events with missing optional fields and a created time", () => {
+    const events = normalizeMetaWebhook({
+      object: "instagram",
+      entry: [
+        {
+          changes: [
+            {
+              field: "comments",
+              value: {
+                id: "comment-2",
+                created_time: 456,
+                media: { id: "media-2" },
+                from: { id: "user-2" }
+              }
+            },
+            { field: "comments", value: { media: { id: "media-2" }, from: { id: "user-2" } } },
+            { field: "comments", value: { id: "comment-3", from: { id: "user-2" } } },
+            { field: "comments", value: { id: "comment-4", media: { id: "media-2" } } }
+          ],
+          messaging: [
+            { sender: { id: "user-3" }, timestamp: 7, message: { text: "hello" } },
+            { sender: { id: "user-4" }, message: { text: "ignored" } }
+          ]
+        }
+      ]
+    });
+
+    expect(events).toEqual([
+      {
+        type: "comment.created",
+        eventId: "comment:comment-2",
+        commentId: "comment-2",
+        mediaId: "media-2",
+        igUserId: "user-2",
+        username: undefined,
+        text: "",
+        createdAt: "456"
+      },
+      {
+        type: "message.text",
+        eventId: "message:user-3:7",
+        igUserId: "user-3",
+        text: "hello"
+      }
+    ]);
+  });
+
+  it("uses supplied message ids, timestamps, and safely truncates external strings", () => {
+    const longText = "x".repeat(1_100);
+    const longPayload = "p".repeat(250);
+    const longUsername = "u".repeat(100);
+    const events = normalizeMetaWebhook({
+      object: "instagram",
+      entry: [
+        {
+          id: "ig-account-id",
+          changes: [
+            {
+              field: "comments",
+              value: {
+                id: "comment-1",
+                text: longText,
+                timestamp: 123,
+                media: { id: "media-1" },
+                from: { id: "user-1", username: longUsername }
+              }
+            }
+          ],
+          messaging: [
+            {
+              sender: { id: "user-2" },
+              timestamp: 2,
+              postback: { mid: "postback-mid", payload: longPayload }
+            },
+            {
+              sender: { id: "user-3" },
+              timestamp: 3,
+              message: { mid: "message-mid", text: longText }
+            }
+          ]
+        }
+      ]
+    });
+
+    expect(events).toHaveLength(3);
+    expect(events[0]).toMatchObject({ createdAt: "123", text: "x".repeat(1_000), username: "u".repeat(80) });
+    expect(events[1]).toMatchObject({ eventId: "postback:user-2:postback-mid", payload: "p".repeat(200) });
+    expect(events[2]).toMatchObject({ eventId: "message:user-3:message-mid", text: "x".repeat(1_000) });
   });
 });
